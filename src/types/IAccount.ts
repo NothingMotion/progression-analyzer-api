@@ -31,7 +31,7 @@ interface IBrawler extends Document {
   masteryTitle?: string;
 }
 
-interface IAccount extends Document {
+interface IAPIAccount extends Document {
   tag: string;
   name: string;
   icon: {
@@ -56,11 +56,12 @@ interface IAccount extends Document {
     members: number;
     description: string;
   };
+}
+interface IAccount extends IAPIAccount {
   history: IAccount[];
   createdAt: Date;
   updatedAt: Date;
 }
-
 interface ICurrentProgress extends Document {
   spentCoins: number;
   spentPowerPoints: number;
@@ -100,8 +101,17 @@ interface IFutureProgress extends Document {
 interface BrawlStarsAccount extends Document {
   _id: string;
   account: IAccount;
+  previousProgresses: ICurrentProgress[];
   currentProgress: ICurrentProgress;
   futureProgresses: IFutureProgress[];
   createdAt: Date;
   updatedAt: Date;
 }
+
+export {
+  IAccount,
+  IAPIAccount,
+  ICurrentProgress,
+  IFutureProgress,
+  BrawlStarsAccount,
+};

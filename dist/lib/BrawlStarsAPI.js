@@ -44,17 +44,23 @@ var BrawlStarsAPIError;
     BrawlStarsAPIError["ServiceUnavailable"] = "Service unavailable";
 })(BrawlStarsAPIError || (BrawlStarsAPIError = {}));
 class BrawlStarsAPI {
-    constructor() {
-        this.baseUrl = "https://api.brawlapi.com/v1";
-        this.apiKey = process.env.BRAWL_STARS_API_KEY || "";
+    constructor(baseUrl = "https://api.brawlstars.com/v1", apiKey) {
+        this.baseUrl = baseUrl;
+        this.apiKey = apiKey;
+        this.baseUrl = baseUrl;
+        if (!apiKey)
+            throw new Error("API key is required");
+        this.apiKey = apiKey;
     }
     get(tag) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             try {
-                const response = yield axios_1.default.get(`${this.baseUrl}/account/${tag}`, {
+                const response = yield axios_1.default.get(`${this.baseUrl}/players/%23${tag}`, {
                     headers: {
                         Authorization: `Bearer ${this.apiKey}`,
+                        "Content-Type": "application/json",
+                        "Cache-Control": "public, max-age=600",
                     },
                 });
                 return response.data;

@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { IAPIAccount } from "../models/IAccount";
 enum BrawlStarsAPIError {
   InvalidTag = "Invalid tag",
   Unauthorized = "Unauthorized",
@@ -9,22 +10,25 @@ enum BrawlStarsAPIError {
   ServiceUnavailable = "Service unavailable",
 }
 class BrawlStarsAPI {
-  private readonly baseUrl: string;
-  private readonly apiKey: string;
-
-  constructor() {
-    this.baseUrl = "https://api.brawlapi.com/v1";
-    this.apiKey = process.env.BRAWL_STARS_API_KEY || "";
+  constructor(
+    private readonly baseUrl: string = "https://api.brawlstars.com/v1",
+    private readonly apiKey: string,
+  ) {
+    this.baseUrl = baseUrl;
+    if (!apiKey) throw new Error("API key is required");
+    this.apiKey = apiKey;
   }
 
-  async get(tag: string): Promise<object | BrawlStarsAPIError> {
+  async get(tag: string): Promise<IAPIAccount | BrawlStarsAPIError> {
     try {
-      const response = await axios.get(`${this.baseUrl}/account/${tag}`, {
+      const response = await axios.get(`${this.baseUrl}/players/%23${tag}`, {
         headers: {
           Authorization: `Bearer ${this.apiKey}`,
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=600",
         },
       });
-      return response.data;
+      return response.data as IAPIAccount;
     } catch (error) {
       if (error instanceof AxiosError) {
         switch (error.response?.status) {
