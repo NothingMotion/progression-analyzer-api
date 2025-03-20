@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { model, Schema } from "mongoose";
 import {
   BrawlStarsAccount,
   ICurrentProgress,
@@ -176,3 +176,7 @@ const accountSchema: Schema = new Schema<BrawlStarsAccount>(
 
   { timestamps: true },
 );
+
+const AccountModel = model<BrawlStarsAccount>("Account", accountSchema);
+
+export { AccountModel };
