@@ -14,4 +14,11 @@ router
   .get(controller.getById)
   .put(controller.update)
   .delete(controller.delete);
+
+router.route("/:id/refresh").get(controller.refreshById);
+
+router.route("/refresh").get(controller.refreshAll);
+
+router.route("/:id/history").get(controller.getHistory);
+
 export { router };

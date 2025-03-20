@@ -1,35 +1,28 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AccountModel = void 0;
 const mongoose_1 = require("mongoose");
 const currentProgressSchema = new mongoose_1.Schema({
-    spentCoins: { type: Number, required: true },
-    spentPowerPoints: { type: Number, required: true },
-    spentCredits: { type: Number, required: true },
-    totalGadgets: { type: Number, required: true },
-    totalStarPowers: { type: Number, required: true },
-    totalGears: { type: Number, required: true },
-    totalBrawlers: { type: Number, required: true },
-    totalMasteryPoints: { type: Number, required: true },
-    totalMasteryLevels: { type: Number, required: true },
-    totalMasteryTitles: { type: Number, required: true },
-    totalBrawlerPower: { type: Number, required: true },
+    coins: { type: Number, required: true },
+    powerPoints: { type: Number, required: true },
+    credits: { type: Number, required: true },
+    gears: { type: Number, required: true },
+    starPowers: { type: Number, required: true },
+    brawlers: { type: Number, required: true },
     averageBrawlerPower: { type: Number, required: true },
     averageBrawlerTrophies: { type: Number, required: true },
     isBoughtPass: { type: Boolean, required: true },
     isBoughtPassPlus: { type: Boolean, required: true },
     isBoughtRankedPass: { type: Boolean, required: true },
+    duration: { type: Date, required: true },
 });
 const futureProgressSchema = new mongoose_1.Schema({
-    predictCoins: { type: Number, required: true },
-    predictPowerPoints: { type: Number, required: true },
-    predictCredits: { type: Number, required: true },
-    predictGears: { type: Number, required: true },
-    predictStarPowers: { type: Number, required: true },
-    predictBrawlers: { type: Number, required: true },
-    predictTrophies: { type: Number, required: true },
-    predictedMasteryPoints: { type: Number, required: true },
-    predictedMasteryLevels: { type: Number, required: true },
-    predictedMasteryTitles: { type: Number, required: true },
+    coins: { type: Number, required: true },
+    powerPoints: { type: Number, required: true },
+    credits: { type: Number, required: true },
+    gears: { type: Number, required: true },
+    starPowers: { type: Number, required: true },
+    brawlers: { type: Number, required: true },
     isBoughtPass: { type: Boolean, required: true },
     isBoughtPassPlus: { type: Boolean, required: true },
     isBoughtRankedPass: { type: Boolean, required: true },
@@ -165,3 +158,8 @@ const accountSchema = new mongoose_1.Schema({
         },
     ],
 }, { timestamps: true });
+accountSchema.pre("save", function (next) {
+    next();
+});
+const AccountModel = (0, mongoose_1.model)("Account", accountSchema);
+exports.AccountModel = AccountModel;

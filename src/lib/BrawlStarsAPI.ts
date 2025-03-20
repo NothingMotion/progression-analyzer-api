@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { IAPIAccount } from "../types/IAccount";
-enum BrawlStarsAPIError {
+import { BrawlStarsAPIError } from "../errors/BrawlStarsAPIError";
+enum BrawlStarsAPIError2 {
   InvalidTag = "Invalid tag",
   Unauthorized = "Unauthorized",
   Forbidden = "Forbidden",
@@ -33,28 +34,37 @@ class BrawlStarsAPI {
       if (error instanceof AxiosError) {
         switch (error.response?.status) {
           case 400:
-            throw new Error(BrawlStarsAPIError.InvalidTag);
+            throw BrawlStarsAPIError.InvalidTag(error.response?.data.message);
           case 401:
-            throw new Error(BrawlStarsAPIError.Unauthorized);
+            throw BrawlStarsAPIError.Unauthorized(error.response?.data.message);
           case 403:
-            throw new Error(BrawlStarsAPIError.Forbidden);
+            throw BrawlStarsAPIError.Forbidden(error.response?.data.message);
           case 404:
-            throw new Error(BrawlStarsAPIError.AccountNotFound);
+            throw BrawlStarsAPIError.AccountNotFound(
+              error.response?.data.message,
+            );
           case 429:
-            throw new Error(BrawlStarsAPIError.RateLimitExceeded);
+            throw BrawlStarsAPIError.RateLimitExceeded(
+              error.response?.data.message,
+            );
           case 500:
-            throw new Error(BrawlStarsAPIError.InternalServerError);
+            throw BrawlStarsAPIError.InternalServerError(
+              error.response?.data.message,
+            );
           case 503:
-            throw new Error(BrawlStarsAPIError.ServiceUnavailable);
+            throw BrawlStarsAPIError.ServiceUnavailable(
+              error.response?.data.message,
+            );
           default:
             throw error;
         }
       }
 
       console.error("Error fetching account:", error);
-      throw error;
+      throw BrawlStarsAPIError.InternalServerError("Internal server error");
     }
   }
 }
 
 export default BrawlStarsAPI;
+export { BrawlStarsAPIError };

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchPlayerProfile = void 0;
+exports.fetchPlayerProfile = fetchPlayerProfile;
 const di_1 = require("../di");
 /**
  * Type guard to check if the result is an IAPIAccount
@@ -52,4 +52,3 @@ function fetchPlayerProfile(playerTag) {
         }
     });
 }
-exports.fetchPlayerProfile = fetchPlayerProfile;

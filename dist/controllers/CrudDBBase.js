@@ -24,10 +24,10 @@ class CrudDBBase {
             }
         });
     }
-    read(data) {
+    read(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const readData = yield this.model.findById(data);
+                const readData = yield this.model.findById(id);
                 return readData;
             }
             catch (error) {

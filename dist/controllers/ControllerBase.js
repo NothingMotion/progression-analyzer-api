@@ -8,16 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ControllerBase = void 0;
+const Logger_1 = __importDefault(require("../lib/Logger"));
 class ControllerBase {
     constructor(crudDB) {
         this.crudDB = crudDB;
     }
     sendSuccessResponse(res, data, statusCode = 200) {
+        Logger_1.default.log(`${new Date().toISOString()} - API Response:[${statusCode}] ${JSON.stringify(data)}`);
         res.status(statusCode).json(data);
     }
     sendErrorResponse(res, error, statusCode = 500) {
+        Logger_1.default.error(`${new Date().toISOString()} - API Error:[${statusCode}] ${error.message}`);
         res.status(statusCode).json({ message: error.message });
     }
     isMatch(data) {
@@ -70,6 +76,24 @@ class ControllerBase {
                 const data = req.body;
                 const updatedData = yield this.crudDB.update(id, data);
                 this.sendSuccessResponse(res, updatedData);
+            }
+            catch (error) {
+                this.sendErrorResponse(res, error);
+            }
+        });
+    }
+    updateById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { id } = req.params;
+                const data = req.body;
+                if (this.isMatch(data)) {
+                    const updatedData = yield this.crudDB.update(id, data);
+                    this.sendSuccessResponse(res, updatedData);
+                }
+                else {
+                    this.sendErrorResponse(res, new Error("Invalid data"), 400);
+                }
             }
             catch (error) {
                 this.sendErrorResponse(res, error);

@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model, FilterQuery } from "mongoose";
 import { ICrudDB } from "../types/ICrudDB";
 
 class CrudDBBase<T> implements ICrudDB<T> {
@@ -11,15 +11,15 @@ class CrudDBBase<T> implements ICrudDB<T> {
       throw new Error(error as string);
     }
   }
-  async read(data: T): Promise<T> {
+  async read<ID = string | number>(id: ID): Promise<T> {
     try {
-      const readData = await this.model.findById(data);
+      const readData = await this.model.findById(id);
       return readData as T;
     } catch (error) {
       throw new Error(error as string);
     }
   }
-  async readByQuery(query: object): Promise<T[]> {
+  async readByQuery(query: FilterQuery<T>): Promise<T[]> {
     try {
       const readData = await this.model.find(query);
       return readData as T[];

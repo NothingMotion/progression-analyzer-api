@@ -6,35 +6,27 @@ import {
 } from "./../types/IAccount";
 
 const currentProgressSchema: Schema = new Schema<ICurrentProgress>({
-  spentCoins: { type: Number, required: true },
-  spentPowerPoints: { type: Number, required: true },
-  spentCredits: { type: Number, required: true },
-  totalGadgets: { type: Number, required: true },
-  totalStarPowers: { type: Number, required: true },
-  totalGears: { type: Number, required: true },
-  totalBrawlers: { type: Number, required: true },
-  totalMasteryPoints: { type: Number, required: true },
-  totalMasteryLevels: { type: Number, required: true },
-  totalMasteryTitles: { type: Number, required: true },
-  totalBrawlerPower: { type: Number, required: true },
+  coins: { type: Number, required: true },
+  powerPoints: { type: Number, required: true },
+  credits: { type: Number, required: true },
+  gears: { type: Number, required: true },
+  starPowers: { type: Number, required: true },
+  brawlers: { type: Number, required: true },
   averageBrawlerPower: { type: Number, required: true },
   averageBrawlerTrophies: { type: Number, required: true },
   isBoughtPass: { type: Boolean, required: true },
   isBoughtPassPlus: { type: Boolean, required: true },
   isBoughtRankedPass: { type: Boolean, required: true },
+  duration: { type: Date, required: true },
 });
 
 const futureProgressSchema: Schema = new Schema<IFutureProgress>({
-  predictCoins: { type: Number, required: true },
-  predictPowerPoints: { type: Number, required: true },
-  predictCredits: { type: Number, required: true },
-  predictGears: { type: Number, required: true },
-  predictStarPowers: { type: Number, required: true },
-  predictBrawlers: { type: Number, required: true },
-  predictTrophies: { type: Number, required: true },
-  predictedMasteryPoints: { type: Number, required: true },
-  predictedMasteryLevels: { type: Number, required: true },
-  predictedMasteryTitles: { type: Number, required: true },
+  coins: { type: Number, required: true },
+  powerPoints: { type: Number, required: true },
+  credits: { type: Number, required: true },
+  gears: { type: Number, required: true },
+  starPowers: { type: Number, required: true },
+  brawlers: { type: Number, required: true },
   isBoughtPass: { type: Boolean, required: true },
   isBoughtPassPlus: { type: Boolean, required: true },
   isBoughtRankedPass: { type: Boolean, required: true },
@@ -176,7 +168,9 @@ const accountSchema: Schema = new Schema<BrawlStarsAccount>(
 
   { timestamps: true },
 );
-
+accountSchema.pre("save", function (next) {
+  next();
+});
 const AccountModel = model<BrawlStarsAccount>("Account", accountSchema);
 
 export { AccountModel };

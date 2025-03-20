@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-interface IBrawler extends Document {
+interface IBrawler {
   id: number;
   name: string;
   trophies: number;
@@ -31,7 +31,7 @@ interface IBrawler extends Document {
   masteryTitle?: string;
 }
 
-interface IAPIAccount extends Document {
+interface IAPIAccount {
   tag: string;
   name: string;
   icon: {
@@ -50,57 +50,30 @@ interface IAPIAccount extends Document {
   club?: {
     tag: string;
     name: string;
-    role: string;
-    trophies: number;
-    requiredTrophies: number;
-    members: number;
-    description: string;
   };
 }
-interface IAccount extends IAPIAccount {
-  history: IAccount[];
-  createdAt: Date;
-  updatedAt: Date;
-}
-interface ICurrentProgress extends Document {
-  spentCoins: number;
-  spentPowerPoints: number;
-  spentCredits: number;
-  totalGadgets: number;
-  totalStarPowers: number;
-  totalGears: number;
-  totalBrawlers: number;
-  totalMasteryPoints: number;
-  totalMasteryLevels: number;
-  totalMasteryTitles: number;
-  totalBrawlerPower: number;
+
+interface IProgress {
+  coins: number;
+  powerPoints: number;
+  credits: number;
+  gears: number;
+  starPowers: number;
+  brawlers: number;
   averageBrawlerPower: number;
   averageBrawlerTrophies: number;
   isBoughtPass: boolean;
   isBoughtPassPlus: boolean;
   isBoughtRankedPass: boolean;
-}
-
-interface IFutureProgress extends Document {
-  predictCoins: number;
-  predictPowerPoints: number;
-  predictCredits: number;
-  predictGears: number;
-  predictStarPowers: number;
-  predictBrawlers: number;
-  predictTrophies: number;
-  predictedMasteryPoints: number;
-  predictedMasteryLevels: number;
-  predictedMasteryTitles: number;
-  isBoughtPass: boolean;
-  isBoughtPassPlus: boolean;
-  isBoughtRankedPass: boolean;
   duration: Date;
 }
+interface ICurrentProgress extends IProgress {}
 
-interface BrawlStarsAccount extends Document {
-  _id: string;
-  account: IAccount;
+interface IFutureProgress extends IProgress {}
+
+interface BrawlStarsAccount {
+  account: IAPIAccount;
+  history: BrawlStarsAccount[];
   previousProgresses: ICurrentProgress[];
   currentProgress: ICurrentProgress;
   futureProgresses: IFutureProgress[];
@@ -109,7 +82,6 @@ interface BrawlStarsAccount extends Document {
 }
 
 export {
-  IAccount,
   IAPIAccount,
   ICurrentProgress,
   IFutureProgress,
