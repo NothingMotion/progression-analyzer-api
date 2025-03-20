@@ -114,4 +114,5 @@ export {
   ICurrentProgress,
   IFutureProgress,
   BrawlStarsAccount,
+  IBrawler,
 };
