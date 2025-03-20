@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { IAPIAccount } from "../models/IAccount";
+import { IAPIAccount } from "../types/IAccount";
 enum BrawlStarsAPIError {
   InvalidTag = "Invalid tag",
   Unauthorized = "Unauthorized",
