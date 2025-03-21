@@ -4,12 +4,12 @@ interface IRewards {
   id: number;
   name: string;
 }
-
-interface IBrawlPassRewards extends IRewards {
+interface IPassRewards extends IRewards {
   resources: IResources[];
 }
+interface IBrawlPassRewards extends IPassRewards {}
 interface IBrawlPassPlusRewards extends IBrawlPassRewards {}
-interface IRankedPassRewards extends IRewards {
+interface IRankedPassRewards extends IPassRewards {
   resources: IResources[];
 }
 

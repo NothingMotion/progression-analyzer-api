@@ -156,7 +156,7 @@ const accountSchema: Schema = new Schema<BrawlStarsAccount>(
     ],
     currentProgress: {
       type: currentProgressSchema,
-      required: true,
+      required: false,
     },
     futureProgresses: [
       {

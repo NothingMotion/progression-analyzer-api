@@ -1,4 +1,5 @@
 import BrawlStarsAPIProvider from "../di/BrawlStarsAPIProvider";
+import { IBrawlPassRewards } from "../types/IRewards";
 import { IStarrDropRewards } from "../types/IStarrDropRewards";
 
 const ACCOUNT_TAG_REGEX = /^[#][0-9A-Za-z]{3,}$/;
@@ -430,4 +431,89 @@ const StarrDropChancesTable: IStarrDropRewards[] = [
     ],
   },
 ];
-export { ACCOUNT_TAG_REGEX, BrawlStarsAPI, UpgradeTable, BrawlerRarityTable };
+const BrawlPassFreeRewardsTable: IBrawlPassRewards = {
+  id: 1,
+  name: "BrawlPass",
+  resources: [
+    {
+      name: "Coins",
+      amount: 8000,
+    },
+    {
+      name: "PowerPoints",
+      amount: 2500,
+    },
+    {
+      name: "Credit",
+      amount: 1000,
+    },
+    {
+      name: "Gem",
+      amount: 50,
+    },
+    {
+      name: "StarrDrop",
+      amount: 29,
+      rarity: "Rare",
+    },
+    {
+      name: "StarrDrop",
+      amount: 1,
+      rarity: "Legendary",
+    },
+  ],
+};
+const BrawlPassPremiumRewardsTable: IBrawlPassRewards = {
+  id: 2,
+  name: "BrawlPass",
+  resources: [
+    {
+      name: "Credit",
+      amount: 1000,
+    },
+    {
+      name: "Gem",
+      amount: 50,
+    },
+    {
+      name: "PowerPoints",
+      amount: 2000,
+    },
+    {
+      name: "Coins",
+      amount: 8000,
+    },
+    {
+      name: "Bling",
+      amount: 2200,
+    },
+  ],
+};
+const BrawlPassPlusRewardsTable: IBrawlPassRewards = {
+  id: 3,
+  name: "BrawlPassPlus",
+  resources: [
+    { name: "Coins", amount: 3000 },
+    {
+      name: "PowerPoints",
+      amount: 1500,
+    },
+    {
+      name: "Bling",
+      amount: 3700,
+    },
+    {
+      name: "Gem",
+      amount: 50,
+    },
+  ],
+};
+export {
+  ACCOUNT_TAG_REGEX,
+  BrawlStarsAPI,
+  UpgradeTable,
+  BrawlerRarityTable,
+  BrawlPassFreeRewardsTable,
+  BrawlPassPremiumRewardsTable,
+  BrawlPassPlusRewardsTable,
+};

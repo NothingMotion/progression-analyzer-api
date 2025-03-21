@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IAccessToken, IRefreshToken, IToken   } from "../types/IAccessToken";
+import { IAccessToken, IRefreshToken, IToken } from "../types/IAccessToken";
 import { ICrudDB } from "../types/ICrudDB";
 import { ControllerBase } from "./ControllerBase";
 import { ControllerNoCrudDBBase } from "./ControllerNoCrudDBBase";
@@ -10,9 +10,11 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
   }
 
   override async get(req: Request, res: Response): Promise<void> {
-    const { token , "application-request-sender": applicationRequestSender } =
-      req.headers;
-    if (!token) {
+    const {
+      authorization,
+      "application-request-sender": applicationRequestSender,
+    } = req.headers;
+    if (!authorization) {
       res.status(401).json({ message: "Unauthorized" });
       return;
     }
@@ -21,7 +23,7 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       return;
     }
     const decoded = jwt.verify(
-      token as string,
+      authorization as string,
       process.env.APPLICATION_FRONTEND_JWT_SECRET as string,
     );
     if (!decoded) {
@@ -35,7 +37,7 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       process.env.JWT_SECRET as string,
       { expiresIn: "1d" },
     );
-    const response : IToken = {
+    const response: IToken = {
       token: accessToken,
       expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
     };
