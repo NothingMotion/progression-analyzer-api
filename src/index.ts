@@ -4,6 +4,10 @@ import { accessTokenRouter } from "./routers/accessTokenRouter";
 import dbConnector from "./utils/dbConnector";
 import authMiddleware from "./middlewares/jwtAuthMiddleware";
 import rateLimit from "express-rate-limit";
+import { masteryRouter } from "./routers/masteryRouter";
+import { starrDropRouter } from "./routers/starrDropRouter";
+import { passRouter } from "./routers/passRouter";
+import { trophyRoadRouter } from "./routers/trophyRoadRouter";
 const app = express();
 
 dbConnector();
@@ -17,12 +21,12 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/api/v1/accounts", authMiddleware, accountRouter);
 app.use("/api/v1/token", accessTokenRouter);
-app.use("/api/v1/rewards/pass");
-app.use("/api/v1/rewards/starrdrop");
-app.use("/api/v1/rewards/trohpy-road");
-app.use("/api/v1/rewards/mastery");
+app.use("/api/v1/accounts", authMiddleware, accountRouter);
+app.use("/api/v1/rewards/pass", authMiddleware, passRouter);
+app.use("/api/v1/rewards/starrdrop", authMiddleware, starrDropRouter);
+app.use("/api/v1/rewards/trohpy-road", authMiddleware, trophyRoadRouter);
+app.use("/api/v1/rewards/mastery", authMiddleware, masteryRouter);
 app.use("*", (req, res) => {
   res.status(404).json({
     message: "Not Found",
