@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.trophyRoadRouter = void 0;
+const express_1 = require("express");
+const TrophyRoadController_1 = require("../controllers/TrophyRoadController");
+const router = (0, express_1.Router)();
+exports.trophyRoadRouter = router;
+const controller = new TrophyRoadController_1.TrophyRoadController();
+router.get("/", controller.getAll);
+router.get("/:id", controller.getById);
+router.post("/", controller.create);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.delete);

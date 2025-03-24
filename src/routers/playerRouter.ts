@@ -28,7 +28,7 @@ router.route("/:tag").get(async (req, res) => {
                 .json({ message: "account not found or could not be fetched" });
               return;
             }
-            await accountDb.create(account);
+            if (!(account instanceof Error)) await accountDb.create(account);
             res.status(200).json(account);
           } catch (error) {
             res.status(500).json({ message: (error as Error).message });
@@ -65,7 +65,7 @@ router.route("/updateAll").post(async (req, res) => {
   }
   for await (const account of accounts) {
     try {
-      await AccountUtils.updateAccount(account.account.account.tag);
+      await AccountUtils.updateAccount(account.account.tag);
       //   await accountDb.update(account._id, {});
     } catch (error) {
       console.log(error);

@@ -3,8 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrawlerRarityTable = exports.UpgradeTable = exports.BrawlStarsAPI = exports.ACCOUNT_TAG_REGEX = void 0;
+exports.BrawlPassPlusRewardsTable = exports.BrawlPassPremiumRewardsTable = exports.BrawlPassFreeRewardsTable = exports.BrawlerRarityTable = exports.UpgradeTable = exports.BrawlStarsAPI = exports.PORT = exports.ACCOUNT_TAG_REGEX = void 0;
 const BrawlStarsAPIProvider_1 = __importDefault(require("../di/BrawlStarsAPIProvider"));
+const PORT = parseInt(process.env.PORT || "3000");
+exports.PORT = PORT;
 const ACCOUNT_TAG_REGEX = /^[#][0-9A-Za-z]{3,}$/;
 exports.ACCOUNT_TAG_REGEX = ACCOUNT_TAG_REGEX;
 const BrawlStarsAPI = BrawlStarsAPIProvider_1.default.getInstance();
@@ -436,3 +438,83 @@ const StarrDropChancesTable = [
         ],
     },
 ];
+const BrawlPassFreeRewardsTable = {
+    id: 1,
+    name: "BrawlPass",
+    resources: [
+        {
+            name: "Coins",
+            amount: 8000,
+        },
+        {
+            name: "PowerPoints",
+            amount: 2500,
+        },
+        {
+            name: "Credit",
+            amount: 1000,
+        },
+        {
+            name: "Gem",
+            amount: 50,
+        },
+        {
+            name: "StarrDrop",
+            amount: 29,
+            rarity: "Rare",
+        },
+        {
+            name: "StarrDrop",
+            amount: 1,
+            rarity: "Legendary",
+        },
+    ],
+};
+exports.BrawlPassFreeRewardsTable = BrawlPassFreeRewardsTable;
+const BrawlPassPremiumRewardsTable = {
+    id: 2,
+    name: "BrawlPass",
+    resources: [
+        {
+            name: "Credit",
+            amount: 1000,
+        },
+        {
+            name: "Gem",
+            amount: 50,
+        },
+        {
+            name: "PowerPoints",
+            amount: 2000,
+        },
+        {
+            name: "Coins",
+            amount: 8000,
+        },
+        {
+            name: "Bling",
+            amount: 2200,
+        },
+    ],
+};
+exports.BrawlPassPremiumRewardsTable = BrawlPassPremiumRewardsTable;
+const BrawlPassPlusRewardsTable = {
+    id: 3,
+    name: "BrawlPassPlus",
+    resources: [
+        { name: "Coins", amount: 3000 },
+        {
+            name: "PowerPoints",
+            amount: 1500,
+        },
+        {
+            name: "Bling",
+            amount: 3700,
+        },
+        {
+            name: "Gem",
+            amount: 50,
+        },
+    ],
+};
+exports.BrawlPassPlusRewardsTable = BrawlPassPlusRewardsTable;

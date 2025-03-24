@@ -21,8 +21,8 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
     }
     get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { token, "application-request-sender": applicationRequestSender } = req.headers;
-            if (!token) {
+            const { authorization, "application-request-sender": applicationRequestSender, } = req.headers;
+            if (!authorization) {
                 res.status(401).json({ message: "Unauthorized" });
                 return;
             }
@@ -30,7 +30,7 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
                 res.status(401).json({ message: "You cannot access this endpoint" });
                 return;
             }
-            const decoded = jsonwebtoken_1.default.verify(token, process.env.APPLICATION_FRONTEND_JWT_SECRET);
+            const decoded = jsonwebtoken_1.default.verify(authorization, process.env.APPLICATION_FRONTEND_JWT_SECRET);
             if (!decoded) {
                 res.status(401).json({ message: "Unauthorized" });
                 return;

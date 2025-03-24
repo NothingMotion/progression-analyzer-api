@@ -149,7 +149,7 @@ const accountSchema = new mongoose_1.Schema({
     ],
     currentProgress: {
         type: currentProgressSchema,
-        required: true,
+        required: false,
     },
     futureProgresses: [
         {

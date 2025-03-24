@@ -44,8 +44,7 @@ class AccountUtils {
                 if (!savedAccount) {
                     throw new Error("Account not found");
                 }
-                const account = yield B, rawlStarsAPI, get;
-                (tag);
+                const account = yield constants_1.BrawlStarsAPI.get(tag);
                 const mapper = new IAPIAccountToBrawlStarsAccount();
                 const mappedNewData = mapper.map(account, savedAccount.currentProgress, savedAccount.futureProgresses, savedAccount.previousProgresses, savedAccount.history, savedAccount.createdAt, savedAccount.updatedAt);
                 savedAccount.history.push(savedAccount);

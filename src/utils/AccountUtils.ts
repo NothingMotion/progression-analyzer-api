@@ -35,7 +35,7 @@ class AccountUtils {
       if (!savedAccount) {
         throw new Error("Account not found");
       }
-      const account = await B rawlStarsAPI.get(tag);
+      const account = await BrawlStarsAPI.get(tag);
       const mapper = new IAPIAccountToBrawlStarsAccount();
       const mappedNewData = mapper.map(
         account,

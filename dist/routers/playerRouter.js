@@ -49,7 +49,8 @@ router.route("/:tag").get((req, res) => __awaiter(void 0, void 0, void 0, functi
                             .json({ message: "account not found or could not be fetched" });
                         return;
                     }
-                    yield accountDb.create(account);
+                    if (!(account instanceof Error))
+                        yield accountDb.create(account);
                     res.status(200).json(account);
                 }
                 catch (error) {
@@ -92,7 +93,7 @@ router.route("/updateAll").post((req, res) => __awaiter(void 0, void 0, void 0, 
             _d = false;
             const account = _c;
             try {
-                yield AccountUtils_1.AccountUtils.updateAccount(account.account.account.tag);
+                yield AccountUtils_1.AccountUtils.updateAccount(account.account.tag);
                 //   await accountDb.update(account._id, {});
             }
             catch (error) {

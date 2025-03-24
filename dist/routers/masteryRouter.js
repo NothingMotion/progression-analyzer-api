@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.masteryRouter = void 0;
+const express_1 = require("express");
+const MasteryController_1 = require("../controllers/MasteryController");
+const masteryRouter = (0, express_1.Router)();
+exports.masteryRouter = masteryRouter;
+const controller = new MasteryController_1.MasteryController();
+masteryRouter.get("/", controller.getAll);
+masteryRouter.get("/:id", controller.getById);
+masteryRouter.post("/", controller.create);
+masteryRouter.put("/:id", controller.update);
+masteryRouter.delete("/:id", controller.delete);

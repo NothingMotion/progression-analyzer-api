@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.starrDropRouter = void 0;
+const express_1 = require("express");
+const StarrDropController_1 = require("../controllers/StarrDropController");
+const router = (0, express_1.Router)();
+exports.starrDropRouter = router;
+const controller = new StarrDropController_1.StarrDropController();
+router.get("/", controller.getAll);
+router.get("/:id", controller.getById);
+router.post("/", controller.create);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.delete);
