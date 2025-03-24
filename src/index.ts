@@ -8,6 +8,7 @@ import { masteryRouter } from "./routers/masteryRouter";
 import { starrDropRouter } from "./routers/starrDropRouter";
 import { passRouter } from "./routers/passRouter";
 import { trophyRoadRouter } from "./routers/trophyRoadRouter";
+import { PORT } from "./constants/constants";
 const app = express();
 
 dbConnector();
@@ -32,6 +33,6 @@ app.use("*", (req, res) => {
     message: "Not Found",
   });
 });
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

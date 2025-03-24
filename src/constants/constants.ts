@@ -1,7 +1,7 @@
 import BrawlStarsAPIProvider from "../di/BrawlStarsAPIProvider";
 import { IBrawlPassRewards } from "../types/IRewards";
 import { IStarrDropRewards } from "../types/IStarrDropRewards";
-
+const PORT: number = parseInt(process.env.PORT || "3000")
 const ACCOUNT_TAG_REGEX = /^[#][0-9A-Za-z]{3,}$/;
 const BrawlStarsAPI = BrawlStarsAPIProvider.getInstance();
 const UpgradeTable = {
@@ -510,6 +510,7 @@ const BrawlPassPlusRewardsTable: IBrawlPassRewards = {
 };
 export {
   ACCOUNT_TAG_REGEX,
+  PORT,
   BrawlStarsAPI,
   UpgradeTable,
   BrawlerRarityTable,
