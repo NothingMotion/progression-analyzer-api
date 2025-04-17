@@ -5,6 +5,8 @@ interface ICrudDB<T> {
   readAll(): Promise<T[]>;
   update<ID = string | number>(id: ID, data: T): Promise<T>;
   delete<ID = string | number>(id: ID): Promise<T>;
+  deleteByQuery(query: object): Promise<T>;
+  deleteByOne(query: object): Promise<T>;
 }
 
 export { ICrudDB };
