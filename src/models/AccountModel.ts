@@ -107,21 +107,21 @@ const accountSchema: Schema = new Schema<IAccount>(
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            level: { type: Number, required: true },
+            // level: { type: Number, required: true },
           },
         ],
         starPowers: [
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            unlocked: { type: Boolean, required: true },
+            // unlocked: { type: Boolean, required: true },
           },
         ],
         gadgets: [
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            unlocked: { type: Boolean, required: true },
+            // unlocked: { type: Boolean, required: true },
           },
         ],
         masteryPoints: { type: Number, required: false },
@@ -157,7 +157,7 @@ const accountSchema: Schema = new Schema<IAccount>(
 const historySchema: Schema = new Schema(
   {
     accountId: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: "Account",
       required: true,
     },
@@ -233,21 +233,21 @@ const historySchema: Schema = new Schema(
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            level: { type: Number, required: true },
+            // level: { type: Number, required: true },
           },
         ],
         starPowers: [
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            unlocked: { type: Boolean, required: true },
+            // unlocked: { type: Boolean, required: true },
           },
         ],
         gadgets: [
           {
             id: { type: Number, required: true },
             name: { type: String, required: true },
-            unlocked: { type: Boolean, required: true },
+            // unlocked: { type: Boolean, required: true },
           },
         ],
         masteryPoints: { type: Number, required: false },

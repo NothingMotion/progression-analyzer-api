@@ -141,7 +141,11 @@ class AccountUtils {
         });
     }
     static parseExtraBrawlerName(name) {
-        return name.replace(" ", "").replace("-", "").replace("_", "");
+        return name
+            .replace(" ", "")
+            .replace("-", "")
+            .replace("_", "")
+            .toUpperCase();
     }
 }
 exports.AccountUtils = AccountUtils;

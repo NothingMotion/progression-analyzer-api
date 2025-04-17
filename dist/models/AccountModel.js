@@ -101,21 +101,21 @@ const accountSchema = new mongoose_1.Schema({
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    level: { type: Number, required: true },
+                    // level: { type: Number, required: true },
                 },
             ],
             starPowers: [
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    unlocked: { type: Boolean, required: true },
+                    // unlocked: { type: Boolean, required: true },
                 },
             ],
             gadgets: [
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    unlocked: { type: Boolean, required: true },
+                    // unlocked: { type: Boolean, required: true },
                 },
             ],
             masteryPoints: { type: Number, required: false },
@@ -146,7 +146,7 @@ const accountSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 const historySchema = new mongoose_1.Schema({
     accountId: {
-        type: mongoose_1.Schema.Types.ObjectId,
+        type: String,
         ref: "Account",
         required: true,
     },
@@ -222,21 +222,21 @@ const historySchema = new mongoose_1.Schema({
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    level: { type: Number, required: true },
+                    // level: { type: Number, required: true },
                 },
             ],
             starPowers: [
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    unlocked: { type: Boolean, required: true },
+                    // unlocked: { type: Boolean, required: true },
                 },
             ],
             gadgets: [
                 {
                     id: { type: Number, required: true },
                     name: { type: String, required: true },
-                    unlocked: { type: Boolean, required: true },
+                    // unlocked: { type: Boolean, required: true },
                 },
             ],
             masteryPoints: { type: Number, required: false },

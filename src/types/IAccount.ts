@@ -10,17 +10,17 @@ interface IBrawler {
   gears?: {
     id: number;
     name: string;
-    level: number;
+    // level: number;
   }[];
   starPowers?: {
     id: number;
     name: string;
-    unlocked: boolean;
+    // unlocked: boolean;
   }[];
   gadgets?: {
     id: number;
     name: string;
-    unlocked: boolean;
+    // unlocked: boolean;
   }[];
   masteryPoints?: number;
 }
@@ -82,7 +82,7 @@ interface ICurrentProgress extends IProgress {}
 interface IFutureProgress extends IProgress {}
 
 interface BrawlStarsAccount {
-  _id: string;
+  _id?: string;
   account: IAccount;
   history: BrawlStarsAccount[];
   previousProgresses: ICurrentProgress[];

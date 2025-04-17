@@ -162,7 +162,11 @@ class AccountUtils {
   }
 
   static parseExtraBrawlerName(name: string): string {
-    return name.replace(" ", "").replace("-", "").replace("_", "");
+    return name
+      .replace(" ", "")
+      .replace("-", "")
+      .replace("_", "")
+      .toUpperCase();
   }
 }
 
