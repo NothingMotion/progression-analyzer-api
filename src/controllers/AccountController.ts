@@ -130,6 +130,7 @@ class AccountController extends ControllerBase<BrawlStarsAccount> {
         this.sendErrorResponse(res, account);
         return;
       }
+      res.status(200).json(account);
     } catch (error) {
       if (error instanceof BrawlStarsAPIError) {
         this.sendErrorResponse(res, error as Error, error.statusCode);
