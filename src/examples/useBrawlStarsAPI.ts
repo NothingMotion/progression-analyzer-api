@@ -31,6 +31,7 @@ async function fetchPlayerProfile(playerTag: string): Promise<void> {
       // Log the player data
       console.log(`Player profile for ${playerData.name} (${playerData.tag}):`);
       console.log(`- Trophies: ${playerData.trophies}`);
+      // @ts-ignore
       console.log(`- Level: ${playerData.level}`);
       console.log(`- Brawlers: ${playerData.brawlers.length}`);
     } else {

@@ -38,6 +38,7 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       }
       const accessToken = jwt.sign(
         {
+          // @ts-ignore
           userId: decoded.userId,
         },
         process.env.JWT_SECRET as string,
@@ -70,8 +71,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
         res.status(401).json({ message: "Unauthorized" });
         return;
       }
+
       const refreshToken = jwt.sign(
         {
+          // @ts-ignore
           userId: decoded.userId,
         },
         process.env.JWT_SECRET as string,

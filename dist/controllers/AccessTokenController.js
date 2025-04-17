@@ -37,6 +37,7 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
                     return;
                 }
                 const accessToken = jsonwebtoken_1.default.sign({
+                    // @ts-ignore
                     userId: decoded.userId,
                 }, process.env.JWT_SECRET, { expiresIn: "1d" });
                 const response = {
@@ -65,6 +66,7 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
                     return;
                 }
                 const refreshToken = jsonwebtoken_1.default.sign({
+                    // @ts-ignore
                     userId: decoded.userId,
                 }, process.env.JWT_SECRET, { expiresIn: "40m" });
                 res.status(200).json({ message: "Authorized", refreshToken });
