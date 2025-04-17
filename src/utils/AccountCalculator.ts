@@ -1,10 +1,17 @@
 import { BrawlerRarityTable, UpgradeTable } from "../constants/constants";
-import { BrawlStarsAccount, ICurrentProgress } from "../types/IAccount";
+import {
+  BrawlStarsAccount,
+  ICurrentProgress,
+  IProgress,
+} from "../types/IAccount";
 import { BrawlerRarityUtils } from "./BrawlerRarityUtils";
 
 class AccountCalculator {
   static calculateCurrentProgress(
     account: BrawlStarsAccount,
+    isBoughtPass: boolean,
+    isBoughtPassPlus: boolean,
+    isBoughtRankedPass: boolean,
   ): ICurrentProgress {
     const currentAccount = account.account;
     const brawlers = currentAccount.brawlers;
@@ -84,7 +91,22 @@ class AccountCalculator {
       }, 0) / brawlers.length,
     );
 
-    return account.currentProgress;
+    const progress: IProgress = {
+      coins: coins,
+      powerPoints: powerPoints,
+      credits: credits,
+      brawlers: brawlers.length,
+      starPowers: starPowers,
+      gears: gears,
+      gadgets: gadgets,
+      averageBrawlerPower,
+      averageBrawlerTrophies,
+      isBoughtPass,
+      isBoughtPassPlus,
+      isBoughtRankedPass,
+      duration: new Date(),
+    };
+    return progress;
   }
 }
 
