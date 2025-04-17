@@ -1,4 +1,4 @@
-import { Model, FilterQuery } from "mongoose";
+import { Model, FilterQuery, UpdateQuery, QueryOptions } from "mongoose";
 import { ICrudDB } from "../types/ICrudDB";
 
 class CrudDBBase<T> implements ICrudDB<T> {
@@ -35,15 +35,33 @@ class CrudDBBase<T> implements ICrudDB<T> {
       throw new Error(error as string);
     }
   }
-  async update<ID = string | number>(id: ID, data: T): Promise<T> {
+  async update<ID = string | number>(id: ID, data: Partial<T>): Promise<T> {
     try {
-      const updateData = await this.model.findByIdAndUpdate(
-        id,
-        { data },
-        {
-          new: true,
-        },
-      );
+      const updateData = await this.model.findByIdAndUpdate(id, data, {
+        new: true,
+      });
+      return updateData as T;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+  async updateByQuery(query: UpdateQuery<T>, data: Partial<T>): Promise<T> {
+    try {
+      const updateData = await this.model.updateMany(query, data);
+      return updateData as T;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+  async updateOneByQuery(
+    query: UpdateQuery<T>,
+    data: Partial<T>,
+    options?: QueryOptions<T>,
+  ): Promise<T> {
+    try {
+      const updateData = await this.model.findOneAndUpdate(query, data, {
+        new: options?.new || true,
+      });
       return updateData as T;
     } catch (error) {
       throw new Error(error as string);
@@ -52,6 +70,22 @@ class CrudDBBase<T> implements ICrudDB<T> {
   async delete<ID = string | number>(id: ID): Promise<T> {
     try {
       const deleteData = await this.model.findByIdAndDelete(id);
+      return deleteData as T;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+  async deleteByQuery(query: FilterQuery<T>): Promise<T> {
+    try {
+      const deleteData = await this.model.deleteMany(query);
+      return deleteData as T;
+    } catch (error) {
+      throw new Error(error as string);
+    }
+  }
+  async deleteByOne(query: FilterQuery<T>): Promise<T> {
+    try {
+      const deleteData = await this.model.findOneAndDelete(query);
       return deleteData as T;
     } catch (error) {
       throw new Error(error as string);

@@ -3,6 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = require("dotenv");
+const Logger_1 = __importDefault(require("./lib/Logger"));
+const path_1 = __importDefault(require("path"));
+(0, dotenv_1.configDotenv)({ path: path_1.default.join(__dirname, "../.env.local") });
 const express_1 = __importDefault(require("express"));
 const accountRouter_1 = require("./routers/accountRouter");
 const accessTokenRouter_1 = require("./routers/accessTokenRouter");
@@ -13,6 +17,8 @@ const masteryRouter_1 = require("./routers/masteryRouter");
 const starrDropRouter_1 = require("./routers/starrDropRouter");
 const passRouter_1 = require("./routers/passRouter");
 const trophyRoadRouter_1 = require("./routers/trophyRoadRouter");
+const brawlerRarityTableRouter_1 = require("./routers/brawlerRarityTableRouter");
+const upgradeTableRouter_1 = require("./routers/upgradeTableRouter");
 const constants_1 = require("./constants/constants");
 const app = (0, express_1.default)();
 (0, dbConnector_1.default)();
@@ -26,13 +32,23 @@ app.use("/api/v1/token", accessTokenRouter_1.accessTokenRouter);
 app.use("/api/v1/accounts", jwtAuthMiddleware_1.default, accountRouter_1.router);
 app.use("/api/v1/rewards/pass", jwtAuthMiddleware_1.default, passRouter_1.passRouter);
 app.use("/api/v1/rewards/starrdrop", jwtAuthMiddleware_1.default, starrDropRouter_1.starrDropRouter);
-app.use("/api/v1/rewards/trohpy-road", jwtAuthMiddleware_1.default, trophyRoadRouter_1.trophyRoadRouter);
+app.use("/api/v1/rewards/trophy-road", jwtAuthMiddleware_1.default, trophyRoadRouter_1.trophyRoadRouter);
 app.use("/api/v1/rewards/mastery", jwtAuthMiddleware_1.default, masteryRouter_1.masteryRouter);
+app.use("/api/v1/table/brawler/rarity", jwtAuthMiddleware_1.default, brawlerRarityTableRouter_1.rarityTableRouter);
+app.use("/api/v1/table/brawler/upgrade", jwtAuthMiddleware_1.default, upgradeTableRouter_1.upgradeTableRouter);
 app.use("*", (req, res) => {
     res.status(404).json({
         message: "Not Found",
     });
 });
 app.listen(constants_1.PORT, () => {
-    console.log(`Server is running on port ${constants_1.PORT}`);
+    Logger_1.default.log(`Server is running on port ${constants_1.PORT}`);
+});
+process.on("SIGINT", () => {
+    Logger_1.default.log("SIGINT signal received. Shutting down gracefully...");
+    process.exit(0);
+});
+process.on("SIGTERM", () => {
+    Logger_1.default.log("SIGTERM signal received. Shutting down gracefully...");
+    process.exit(0);
 });

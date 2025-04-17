@@ -1,3 +1,7 @@
+import { configDotenv } from "dotenv";
+import Logger from "./lib/Logger";
+import path from "path";
+configDotenv({ path: path.join(__dirname, "../.env.local") });
 import express from "express";
 import { router as accountRouter } from "./routers/accountRouter";
 import { accessTokenRouter } from "./routers/accessTokenRouter";
@@ -8,6 +12,9 @@ import { masteryRouter } from "./routers/masteryRouter";
 import { starrDropRouter } from "./routers/starrDropRouter";
 import { passRouter } from "./routers/passRouter";
 import { trophyRoadRouter } from "./routers/trophyRoadRouter";
+import { rarityTableRouter } from "./routers/brawlerRarityTableRouter";
+
+import { upgradeTableRouter } from "./routers/upgradeTableRouter";
 import { PORT } from "./constants/constants";
 const app = express();
 
@@ -26,13 +33,25 @@ app.use("/api/v1/token", accessTokenRouter);
 app.use("/api/v1/accounts", authMiddleware, accountRouter);
 app.use("/api/v1/rewards/pass", authMiddleware, passRouter);
 app.use("/api/v1/rewards/starrdrop", authMiddleware, starrDropRouter);
-app.use("/api/v1/rewards/trohpy-road", authMiddleware, trophyRoadRouter);
+app.use("/api/v1/rewards/trophy-road", authMiddleware, trophyRoadRouter);
 app.use("/api/v1/rewards/mastery", authMiddleware, masteryRouter);
+app.use("/api/v1/table/brawler/rarity", authMiddleware, rarityTableRouter);
+
+app.use("/api/v1/table/brawler/upgrade", authMiddleware, upgradeTableRouter);
 app.use("*", (req, res) => {
   res.status(404).json({
     message: "Not Found",
   });
 });
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  Logger.log(`Server is running on port ${PORT}`);
+});
+
+process.on("SIGINT", () => {
+  Logger.log("SIGINT signal received. Shutting down gracefully...");
+  process.exit(0);
+});
+process.on("SIGTERM", () => {
+  Logger.log("SIGTERM signal received. Shutting down gracefully...");
+  process.exit(0);
 });

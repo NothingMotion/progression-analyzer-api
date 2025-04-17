@@ -60,8 +60,32 @@ class CrudDBBase {
     update(id, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const updateData = yield this.model.findByIdAndUpdate(id, { data }, {
+                const updateData = yield this.model.findByIdAndUpdate(id, data, {
                     new: true,
+                });
+                return updateData;
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
+    updateByQuery(query, data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updateData = yield this.model.updateMany(query, data);
+                return updateData;
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
+    updateOneByQuery(query, data, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updateData = yield this.model.findOneAndUpdate(query, data, {
+                    new: (options === null || options === void 0 ? void 0 : options.new) || true,
                 });
                 return updateData;
             }
@@ -74,6 +98,28 @@ class CrudDBBase {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const deleteData = yield this.model.findByIdAndDelete(id);
+                return deleteData;
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
+    deleteByQuery(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const deleteData = yield this.model.deleteMany(query);
+                return deleteData;
+            }
+            catch (error) {
+                throw new Error(error);
+            }
+        });
+    }
+    deleteByOne(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const deleteData = yield this.model.findOneAndDelete(query);
                 return deleteData;
             }
             catch (error) {

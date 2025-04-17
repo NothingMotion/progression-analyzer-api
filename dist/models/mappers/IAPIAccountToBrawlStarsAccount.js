@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IAPIAccountToBrawlStarsAccount = void 0;
 const MapperBase_1 = require("./MapperBase");
 class IAPIAccountToBrawlStarsAccount extends MapperBase_1.MapperBase {
     map(data, ...args) {
@@ -14,22 +15,24 @@ class IAPIAccountToBrawlStarsAccount extends MapperBase_1.MapperBase {
                 tag: data.tag,
                 name: data.name,
                 icon: data.icon,
-                level: data.level,
-                trophies: data.trophies,
-                highestTrophies: data.highestTrophies,
-                soloVictories: data.soloVictories,
-                duoVictories: data.duoVictories,
-                trioVictories: data.trioVictories,
-                bestRoboRumbleTime: data.bestRoboRumbleTime,
-                bestTimeAsBigBrawler: data.bestTimeAsBigBrawler,
-                brawlers: data.brawlers,
+                expLevel: data.expLevel || 0,
+                expPoints: data.expPoints || 0,
+                trophies: data.trophies || 0,
+                highestTrophies: data.highestTrophies || 0,
+                soloVictories: data.soloVictories || 0,
+                duoVictories: data.duoVictories || 0,
+                trioVictories: data.trioVictories || 0,
+                bestRoboRumbleTime: data.bestRoboRumbleTime || 0,
+                bestTimeAsBigBrawler: data.bestTimeAsBigBrawler || 0,
+                brawlers: data.brawlers || [],
             },
-            history: history,
-            previousProgresses: previousProgresses,
+            history: history || [],
+            previousProgresses: previousProgresses || [],
             currentProgress: currentProgress,
-            futureProgresses: futureProgresses,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
+            futureProgresses: futureProgresses || [],
+            createdAt: createdAt || new Date(),
+            updatedAt: updatedAt || new Date(),
         };
     }
 }
+exports.IAPIAccountToBrawlStarsAccount = IAPIAccountToBrawlStarsAccount;

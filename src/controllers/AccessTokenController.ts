@@ -4,69 +4,84 @@ import { ICrudDB } from "../types/ICrudDB";
 import { ControllerBase } from "./ControllerBase";
 import { ControllerNoCrudDBBase } from "./ControllerNoCrudDBBase";
 import jwt from "jsonwebtoken";
+import Logger from "../lib/Logger";
 class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
   constructor() {
     super();
   }
 
   override async get(req: Request, res: Response): Promise<void> {
-    const {
-      authorization,
-      "application-request-sender": applicationRequestSender,
-    } = req.headers;
-    if (!authorization) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
+    try {
+      const {
+        authorization,
+        "application-request-sender": applicationRequestSender,
+      } = req.headers;
+      if (!authorization) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      if (!applicationRequestSender || applicationRequestSender !== "android") {
+        res.status(401).json({ message: "You cannot access this endpoint" });
+        return;
+      }
+      const decoded = jwt.verify(
+        authorization.split(" ")[1] as string,
+        process.env.APPLICATION_FRONTEND_JWT_SECRET as string,
+        // {
+        //   ignoreExpiration: true,
+        //   ignoreNotBefore: true,
+        // },
+      );
+      if (!decoded) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const accessToken = jwt.sign(
+        {
+          userId: decoded.userId,
+        },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "1d" },
+      );
+      const response: IToken = {
+        token: accessToken,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+      };
+      res.status(200).json({ message: "Authorized", response });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
     }
-    if (!applicationRequestSender || applicationRequestSender !== "android") {
-      res.status(401).json({ message: "You cannot access this endpoint" });
-      return;
-    }
-    const decoded = jwt.verify(
-      authorization as string,
-      process.env.APPLICATION_FRONTEND_JWT_SECRET as string,
-    );
-    if (!decoded) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-    const accessToken = jwt.sign(
-      {
-        userId: decoded.userId,
-      },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "1d" },
-    );
-    const response: IToken = {
-      token: accessToken,
-      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
-    };
-    res.status(200).json({ message: "Authorized", response });
   }
 
   async getRefreshToken(req: Request, res: Response): Promise<void> {
-    const { token } = req.body;
-    if (!token) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-    const decoded = jwt.verify(
-      token as string,
-      process.env.JWT_SECRET as string,
-    );
+    try {
+      const { authorization: token } = req.headers;
+      if (!token) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const decoded = jwt.verify(
+        token.split(" ")[1] as string,
+        process.env.JWT_SECRET as string,
+      );
 
-    if (!decoded) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
+      if (!decoded) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const refreshToken = jwt.sign(
+        {
+          userId: decoded.userId,
+        },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "40m" },
+      );
+      res.status(200).json({ message: "Authorized", refreshToken });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
     }
-    const accessToken = jwt.sign(
-      {
-        userId: decoded.userId,
-      },
-      process.env.JWT_SECRET as string,
-      { expiresIn: "40m" },
-    );
-    res.status(200).json({ message: "Authorized", accessToken });
   }
 }
 

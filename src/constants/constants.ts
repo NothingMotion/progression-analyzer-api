@@ -1,8 +1,12 @@
 import BrawlStarsAPIProvider from "../di/BrawlStarsAPIProvider";
-import { IBrawlPassRewards } from "../types/IRewards";
+import {
+  IBrawlPassRewards,
+  IRankedPassRewards,
+  IRankedProPassRewards,
+} from "../types/IRewards";
 import { IStarrDropRewards } from "../types/IStarrDropRewards";
-const PORT: number = parseInt(process.env.PORT || "3000")
-const ACCOUNT_TAG_REGEX = /^[#][0-9A-Za-z]{3,}$/;
+const PORT: number = parseInt(process.env.PORT || "3000");
+const ACCOUNT_TAG_REGEX = /^[#]?[0-9A-Za-z]{3,}$/;
 const BrawlStarsAPI = BrawlStarsAPIProvider.getInstance();
 const UpgradeTable = {
   levels: [
@@ -508,6 +512,17 @@ const BrawlPassPlusRewardsTable: IBrawlPassRewards = {
     },
   ],
 };
+const RankedPassRewardsTable: IRankedPassRewards = {
+  id: 4,
+  name: "RankedPass",
+  resources: [],
+};
+const RankedPassProRewardsTable: IRankedProPassRewards = {
+  id: 5,
+  name: "RankedProPass",
+  resources: [],
+};
+
 export {
   ACCOUNT_TAG_REGEX,
   PORT,
@@ -517,4 +532,5 @@ export {
   BrawlPassFreeRewardsTable,
   BrawlPassPremiumRewardsTable,
   BrawlPassPlusRewardsTable,
+  StarrDropChancesTable,
 };

@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
 import {
   BrawlStarsAccount,
+  IAccount,
   ICurrentProgress,
   IFutureProgress,
 } from "./../types/IAccount";
@@ -32,121 +33,256 @@ const futureProgressSchema: Schema = new Schema<IFutureProgress>({
   isBoughtRankedPass: { type: Boolean, required: true },
   duration: { type: Date, required: true },
 });
-
-const accountSchema: Schema = new Schema<BrawlStarsAccount>(
+const accountSchema: Schema = new Schema<IAccount>(
   {
-    account: {
+    tag: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    icon: {
+      id: {
+        type: Number,
+        required: false,
+      },
+    },
+    expLevel: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    expPoints: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    trophies: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    highestTrophies: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    soloVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    duoVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    trioVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    bestRoboRumbleTime: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    bestTimeAsBigBrawler: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    brawlers: [
+      {
+        id: { type: Number, required: true },
+        name: { type: String, required: true },
+        trophies: { type: Number, required: true },
+        highestTrophies: { type: Number, required: true },
+        rank: { type: Number, required: true },
+        power: { type: Number, required: true },
+        gears: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            level: { type: Number, required: true },
+          },
+        ],
+        starPowers: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            unlocked: { type: Boolean, required: true },
+          },
+        ],
+        gadgets: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            unlocked: { type: Boolean, required: true },
+          },
+        ],
+        masteryPoints: { type: Number, required: false },
+      },
+    ],
+    rank: {
+      points: { type: Number, required: false },
+      league: { type: String, required: false },
+      leagueSub: { type: String, required: false },
+      formatted: { type: String, required: false },
+    },
+    highestRank: {
+      points: { type: Number, required: false },
+      league: { type: String, required: false },
+      leagueSub: { type: String, required: false },
+      formatted: { type: String, required: false },
+    },
+
+    club: {
       tag: {
         type: String,
-        required: true,
-        unique: true,
+        required: false,
       },
       name: {
         type: String,
-        required: true,
-      },
-      icon: {
-        id: {
-          type: Number,
-          required: true,
-        },
-        url: {
-          type: String,
-          required: true,
-        },
-      },
-      level: {
-        type: Number,
-        required: true,
-      },
-      trophies: {
-        type: Number,
-        required: true,
-      },
-      highestTrophies: {
-        type: Number,
-        required: true,
-      },
-      soloVictories: {
-        type: Number,
-        required: true,
-      },
-      duoVictories: {
-        type: Number,
-        required: true,
-      },
-      trioVictories: {
-        type: Number,
-        required: true,
-      },
-      bestRoboRumbleTime: {
-        type: Number,
-        required: true,
-      },
-      bestTimeAsBigBrawler: {
-        type: Number,
-        required: true,
-      },
-      brawlers: [
-        {
-          id: { type: Number, required: true },
-          name: { type: String, required: true },
-          trophies: { type: Number, required: true },
-          highestTrophies: { type: Number, required: true },
-          rank: { type: Number, required: true },
-          power: { type: Number, required: true },
-          gears: [
-            {
-              id: { type: Number, required: true },
-              name: { type: String, required: true },
-              level: { type: Number, required: true },
-            },
-          ],
-          starPowers: [
-            {
-              id: { type: Number, required: true },
-              name: { type: String, required: true },
-              unlocked: { type: Boolean, required: true },
-            },
-          ],
-          gadgets: [
-            {
-              id: { type: Number, required: true },
-              name: { type: String, required: true },
-              unlocked: { type: Boolean, required: true },
-            },
-          ],
-          mastery: {
-            level: { type: Number, required: true },
-            progress: { type: Number, required: true },
-          },
-          masteryProgress: { type: Number },
-          masteryLevel: { type: Number },
-          masteryTitle: { type: String },
-        },
-      ],
-      club: {
-        tag: {
-          type: String,
-          required: true,
-        },
-        name: {
-          type: String,
-          required: true,
-        },
-      },
-      history: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Account",
-          required: false,
-        },
-      ],
-      createdAt: {
-        type: Date,
-        default: Date.now,
+        required: false,
       },
     },
+  },
+  { timestamps: true },
+);
+
+const historySchema: Schema = new Schema(
+  {
+    accountId: {
+      type: Schema.Types.ObjectId,
+      ref: "Account",
+      required: true,
+    },
+    // tag: {
+    //   type: String,
+    //   required: true,
+    //   unique: false,
+    // },
+    name: {
+      type: String,
+      required: true,
+    },
+    icon: {
+      id: {
+        type: Number,
+        required: false,
+      },
+    },
+    expLevel: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    expPoints: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    trophies: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    highestTrophies: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    soloVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    duoVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    trioVictories: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    bestRoboRumbleTime: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    bestTimeAsBigBrawler: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    brawlers: [
+      {
+        id: { type: Number, required: true },
+        name: { type: String, required: true },
+        trophies: { type: Number, required: true },
+        highestTrophies: { type: Number, required: true },
+        rank: { type: Number, required: true },
+        power: { type: Number, required: true },
+        gears: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            level: { type: Number, required: true },
+          },
+        ],
+        starPowers: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            unlocked: { type: Boolean, required: true },
+          },
+        ],
+        gadgets: [
+          {
+            id: { type: Number, required: true },
+            name: { type: String, required: true },
+            unlocked: { type: Boolean, required: true },
+          },
+        ],
+        masteryPoints: { type: Number, required: false },
+      },
+    ],
+    rank: {
+      points: { type: Number, required: false },
+      league: { type: String, required: false },
+      leagueSub: { type: String, required: false },
+      formatted: { type: String, required: false },
+    },
+    highestRank: {
+      points: { type: Number, required: false },
+      league: { type: String, required: false },
+      leagueSub: { type: String, required: false },
+      formatted: { type: String, required: false },
+    },
+
+    club: {
+      tag: {
+        type: String,
+        required: false,
+      },
+      name: {
+        type: String,
+        required: false,
+      },
+    },
+  },
+  { timestamps: true },
+);
+
+const brawlStarsAccountSchema: Schema = new Schema<BrawlStarsAccount>(
+  {
+    account: accountSchema,
 
     previousProgresses: [
       {
@@ -171,6 +307,10 @@ const accountSchema: Schema = new Schema<BrawlStarsAccount>(
 accountSchema.pre("save", function (next) {
   next();
 });
-const AccountModel = model<BrawlStarsAccount>("Account", accountSchema);
+const AccountModel = model<BrawlStarsAccount>(
+  "Account",
+  brawlStarsAccountSchema,
+);
 
-export { AccountModel };
+const HistoryModel = model<BrawlStarsAccount>("History", historySchema);
+export { AccountModel, HistoryModel };

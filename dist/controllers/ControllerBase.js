@@ -74,8 +74,13 @@ class ControllerBase {
             try {
                 const { id } = req.params;
                 const data = req.body;
-                const updatedData = yield this.crudDB.update(id, data);
-                this.sendSuccessResponse(res, updatedData);
+                if (this.isMatch(data)) {
+                    const updatedData = yield this.crudDB.update(id, data);
+                    this.sendSuccessResponse(res, updatedData);
+                }
+                else {
+                    this.sendErrorResponse(res, new Error("Invalid data"), 400);
+                }
             }
             catch (error) {
                 this.sendErrorResponse(res, error);

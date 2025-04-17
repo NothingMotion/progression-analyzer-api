@@ -4,7 +4,7 @@ exports.AccountCalculator = void 0;
 const constants_1 = require("../constants/constants");
 const BrawlerRarityUtils_1 = require("./BrawlerRarityUtils");
 class AccountCalculator {
-    static calculateCurrentProgress(account) {
+    static calculateCurrentProgress(account, isBoughtPass, isBoughtPassPlus, isBoughtRankedPass) {
         const currentAccount = account.account;
         const brawlers = currentAccount.brawlers;
         // math to the rescue!!
@@ -61,7 +61,22 @@ class AccountCalculator {
         const averageBrawlerTrophies = Math.floor(brawlers.reduce((acc, brawler) => {
             return acc + brawler.trophies;
         }, 0) / brawlers.length);
-        return account.currentProgress;
+        const progress = {
+            coins: coins,
+            powerPoints: powerPoints,
+            credits: credits,
+            brawlers: brawlers.length,
+            starPowers: starPowers,
+            gears: gears,
+            gadgets: gadgets,
+            averageBrawlerPower,
+            averageBrawlerTrophies,
+            isBoughtPass,
+            isBoughtPassPlus,
+            isBoughtRankedPass,
+            duration: new Date(),
+        };
+        return progress;
     }
 }
 exports.AccountCalculator = AccountCalculator;

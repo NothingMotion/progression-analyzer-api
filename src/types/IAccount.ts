@@ -22,13 +22,7 @@ interface IBrawler {
     name: string;
     unlocked: boolean;
   }[];
-  mastery?: {
-    level: number;
-    progress: number;
-  };
-  masteryProgress?: number;
-  masteryLevel?: number;
-  masteryTitle?: string;
+  masteryPoints?: number;
 }
 
 interface IAPIAccount {
@@ -38,7 +32,8 @@ interface IAPIAccount {
     id: number;
     url: string;
   };
-  level: number;
+  expLevel: number;
+  expPoints: number;
   trophies: number;
   highestTrophies: number;
   soloVictories: number;
@@ -52,12 +47,27 @@ interface IAPIAccount {
     name: string;
   };
 }
+interface IAccount extends IAPIAccount {
+  rank?: {
+    points?: number;
+    league?: string;
+    leagueSub?: string;
+    formatted?: string;
+  };
 
+  highestRank?: {
+    points?: number;
+    league?: string;
+    leagueSub?: string;
+    formatted?: string;
+  };
+}
 interface IProgress {
   coins: number;
   powerPoints: number;
   credits: number;
   gears: number;
+  gadgets: number;
   starPowers: number;
   brawlers: number;
   averageBrawlerPower: number;
@@ -72,7 +82,8 @@ interface ICurrentProgress extends IProgress {}
 interface IFutureProgress extends IProgress {}
 
 interface BrawlStarsAccount {
-  account: IAPIAccount;
+  _id: string;
+  account: IAccount;
   history: BrawlStarsAccount[];
   previousProgresses: ICurrentProgress[];
   currentProgress: ICurrentProgress;
@@ -81,10 +92,35 @@ interface BrawlStarsAccount {
   updatedAt: Date;
 }
 
+interface IExtraBrawlNinja {
+  result: {
+    data: {
+      json?: {
+        rank?: {
+          points?: number;
+          league?: string;
+          leagueSub?: string;
+          formatted?: string;
+        };
+        highestRank?: {
+          points?: number;
+          league?: string;
+          leagueSub?: string;
+          formatted?: string;
+        };
+        accountCreationYear?: number;
+        brawlers?: { [key: string]: { masteryPoints: number } };
+      };
+    };
+  };
+}
 export {
   IAPIAccount,
   ICurrentProgress,
   IFutureProgress,
   BrawlStarsAccount,
   IBrawler,
+  IProgress,
+  IAccount,
+  IExtraBrawlNinja,
 };

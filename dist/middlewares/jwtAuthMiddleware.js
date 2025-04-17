@@ -14,14 +14,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const jwtAuthMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.headers.authorization;
-    if (!token) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
         res.status(401).json({ message: "Unauthorized" });
         return;
     }
-    const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "");
-    if (!decoded) {
-        res.status(401).json({ message: "Unauthorized" });
+    if (!authHeader.startsWith("Bearer ")) {
+        res
+            .status(401)
+            .json({ message: "Authorization header must start with Bearer" });
+    }
+    // Extract the token by removing the 'Bearer ' prefix
+    const token = authHeader.split(" ")[1];
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "", {
+            ignoreExpiration: true,
+        });
+        if (!decoded) {
+            res.status(401).json({ message: "Unauthorized" });
+            return;
+        }
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: "Failed to authenticate token",
+            error: error.message,
+        });
         return;
     }
     next();

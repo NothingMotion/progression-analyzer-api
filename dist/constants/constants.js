@@ -3,11 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrawlPassPlusRewardsTable = exports.BrawlPassPremiumRewardsTable = exports.BrawlPassFreeRewardsTable = exports.BrawlerRarityTable = exports.UpgradeTable = exports.BrawlStarsAPI = exports.PORT = exports.ACCOUNT_TAG_REGEX = void 0;
+exports.StarrDropChancesTable = exports.BrawlPassPlusRewardsTable = exports.BrawlPassPremiumRewardsTable = exports.BrawlPassFreeRewardsTable = exports.BrawlerRarityTable = exports.UpgradeTable = exports.BrawlStarsAPI = exports.PORT = exports.ACCOUNT_TAG_REGEX = void 0;
 const BrawlStarsAPIProvider_1 = __importDefault(require("../di/BrawlStarsAPIProvider"));
 const PORT = parseInt(process.env.PORT || "3000");
 exports.PORT = PORT;
-const ACCOUNT_TAG_REGEX = /^[#][0-9A-Za-z]{3,}$/;
+const ACCOUNT_TAG_REGEX = /^[#]?[0-9A-Za-z]{3,}$/;
 exports.ACCOUNT_TAG_REGEX = ACCOUNT_TAG_REGEX;
 const BrawlStarsAPI = BrawlStarsAPIProvider_1.default.getInstance();
 exports.BrawlStarsAPI = BrawlStarsAPI;
@@ -438,6 +438,7 @@ const StarrDropChancesTable = [
         ],
     },
 ];
+exports.StarrDropChancesTable = StarrDropChancesTable;
 const BrawlPassFreeRewardsTable = {
     id: 1,
     name: "BrawlPass",
@@ -518,3 +519,13 @@ const BrawlPassPlusRewardsTable = {
     ],
 };
 exports.BrawlPassPlusRewardsTable = BrawlPassPlusRewardsTable;
+const RankedPassRewardsTable = {
+    id: 4,
+    name: "RankedPass",
+    resources: [],
+};
+const RankedPassProRewardsTable = {
+    id: 5,
+    name: "RankedProPass",
+    resources: [],
+};

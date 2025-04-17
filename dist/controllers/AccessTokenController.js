@@ -21,46 +21,58 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
     }
     get(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { authorization, "application-request-sender": applicationRequestSender, } = req.headers;
-            if (!authorization) {
-                res.status(401).json({ message: "Unauthorized" });
-                return;
+            try {
+                const { authorization, "application-request-sender": applicationRequestSender, } = req.headers;
+                if (!authorization) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                if (!applicationRequestSender || applicationRequestSender !== "android") {
+                    res.status(401).json({ message: "You cannot access this endpoint" });
+                    return;
+                }
+                const decoded = jsonwebtoken_1.default.verify(authorization.split(" ")[1], process.env.APPLICATION_FRONTEND_JWT_SECRET);
+                if (!decoded) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                const accessToken = jsonwebtoken_1.default.sign({
+                    userId: decoded.userId,
+                }, process.env.JWT_SECRET, { expiresIn: "1d" });
+                const response = {
+                    token: accessToken,
+                    expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
+                };
+                res.status(200).json({ message: "Authorized", response });
             }
-            if (!applicationRequestSender || applicationRequestSender !== "android") {
-                res.status(401).json({ message: "You cannot access this endpoint" });
-                return;
+            catch (error) {
+                console.error(error);
+                res.status(500).json(error);
             }
-            const decoded = jsonwebtoken_1.default.verify(authorization, process.env.APPLICATION_FRONTEND_JWT_SECRET);
-            if (!decoded) {
-                res.status(401).json({ message: "Unauthorized" });
-                return;
-            }
-            const accessToken = jsonwebtoken_1.default.sign({
-                userId: decoded.userId,
-            }, process.env.JWT_SECRET, { expiresIn: "1d" });
-            const response = {
-                token: accessToken,
-                expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24),
-            };
-            res.status(200).json({ message: "Authorized", response });
         });
     }
     getRefreshToken(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { token } = req.body;
-            if (!token) {
-                res.status(401).json({ message: "Unauthorized" });
-                return;
+            try {
+                const { authorization: token } = req.headers;
+                if (!token) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                const decoded = jsonwebtoken_1.default.verify(token.split(" ")[1], process.env.JWT_SECRET);
+                if (!decoded) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                const refreshToken = jsonwebtoken_1.default.sign({
+                    userId: decoded.userId,
+                }, process.env.JWT_SECRET, { expiresIn: "40m" });
+                res.status(200).json({ message: "Authorized", refreshToken });
             }
-            const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-            if (!decoded) {
-                res.status(401).json({ message: "Unauthorized" });
-                return;
+            catch (error) {
+                console.error(error);
+                res.status(500).json(error);
             }
-            const accessToken = jsonwebtoken_1.default.sign({
-                userId: decoded.userId,
-            }, process.env.JWT_SECRET, { expiresIn: "40m" });
-            res.status(200).json({ message: "Authorized", accessToken });
         });
     }
 }

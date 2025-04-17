@@ -4,10 +4,10 @@ import { MasteryController } from "../controllers/MasteryController";
 const masteryRouter = Router();
 const controller = new MasteryController();
 
-masteryRouter.get("/", controller.getAll);
-masteryRouter.get("/:id", controller.getById);
-masteryRouter.post("/", controller.create);
-masteryRouter.put("/:id", controller.update);
-masteryRouter.delete("/:id", controller.delete);
+masteryRouter.get("/", controller.getAll.bind(controller));
+masteryRouter.get("/:id", controller.getById.bind(controller));
+masteryRouter.post("/", controller.create.bind(controller));
+masteryRouter.put("/:id", controller.update.bind(controller));
+masteryRouter.delete("/:id", controller.delete.bind(controller));
 
 export { masteryRouter };

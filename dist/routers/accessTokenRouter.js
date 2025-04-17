@@ -6,5 +6,5 @@ const AccessTokenController_1 = require("../controllers/AccessTokenController");
 const router = (0, express_1.Router)();
 exports.accessTokenRouter = router;
 const controller = new AccessTokenController_1.AccessTokenController();
-router.get("/access", controller.get);
-router.get("/refresh", controller.getRefreshToken);
+router.get("/access", controller.get.bind(controller));
+router.get("/refresh", controller.getRefreshToken.bind(controller));

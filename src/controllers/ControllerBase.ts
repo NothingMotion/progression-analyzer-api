@@ -10,7 +10,9 @@ abstract class ControllerBase<T> {
     statusCode: number = 200,
   ): void {
     Logger.log(
-      `${new Date().toISOString()} - API Response:[${statusCode}] ${JSON.stringify(data)}`,
+      `${new Date().toISOString()} - API Response:[${statusCode}] ${JSON.stringify(
+        data,
+      )}`,
     );
     res.status(statusCode).json(data);
   }
@@ -21,7 +23,9 @@ abstract class ControllerBase<T> {
     statusCode: number = 500,
   ): void {
     Logger.error(
-      `${new Date().toISOString()} - API Error:[${statusCode}] ${error.message}`,
+      `${new Date().toISOString()} - API Error:[${statusCode}] ${
+        error.message
+      }`,
     );
     res.status(statusCode).json({ message: error.message });
   }
@@ -65,8 +69,13 @@ abstract class ControllerBase<T> {
     try {
       const { id } = req.params;
       const data = req.body;
-      const updatedData = await this.crudDB.update(id, data);
-      this.sendSuccessResponse(res, updatedData);
+
+      if (this.isMatch(data)) {
+        const updatedData = await this.crudDB.update(id, data);
+        this.sendSuccessResponse(res, updatedData);
+      } else {
+        this.sendErrorResponse(res, new Error("Invalid data"), 400);
+      }
     } catch (error) {
       this.sendErrorResponse(res, error as Error);
     }
