@@ -163,6 +163,7 @@ class AccountUtils {
 
   static parseExtraBrawlerName(name: string): string {
     return name
+      .replace("__", " ")
       .replace(" ", "")
       .replace("-", "")
       .replace("_", "")

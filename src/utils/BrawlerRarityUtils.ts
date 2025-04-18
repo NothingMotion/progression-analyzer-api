@@ -23,6 +23,9 @@ class BrawlerRarityUtils {
   static get(brawler: IBrawler): IRarity {
     return "Common";
   }
+  static is(brawler: IBrawler, target: IRarity): boolean {
+    return BrawlerRarityUtils.get(brawler) === target;
+  }
 }
 
 export { BrawlerRarityUtils };
