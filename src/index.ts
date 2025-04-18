@@ -3,6 +3,7 @@ import Logger from "./lib/Logger";
 import path from "path";
 configDotenv({ path: path.join(__dirname, "../.env.local") });
 import express from "express";
+import cors from "cors";
 import { router as accountRouter } from "./routers/accountRouter";
 import { accessTokenRouter } from "./routers/accessTokenRouter";
 import dbConnector from "./utils/dbConnector";
@@ -19,6 +20,16 @@ import { PORT } from "./constants/constants";
 const app = express();
 
 dbConnector();
+
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  }),
+);
 
 //rate limit
 app.use(
