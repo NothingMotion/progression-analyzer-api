@@ -25,15 +25,15 @@ router
   .get(controller.getAll.bind(controller))
   .post(controller.create.bind(controller));
 
-router
-  .route("/:id")
-  .get(controller.getById.bind(controller))
-  .put(controller.update.bind(controller))
-  .delete(controller.delete.bind(controller));
+// router
+//   .route("/:id")
+//   .get(controller.getById.bind(controller))
+//   .put(controller.update.bind(controller))
+//   .delete(controller.delete.bind(controller));
 
-router
-  .route("/track/:id")
-  .get(trackController.getById.bind(trackController))
-  .patch(trackController.update.bind(trackController))
-  .delete(trackController.delete.bind(trackController));
+// router
+//   .route("/track/:id")
+//   .get(trackController.getById.bind(trackController))
+//   .patch(trackController.update.bind(trackController))
+//   .delete(trackController.delete.bind(trackController));
 export { router as notmotRouter };
