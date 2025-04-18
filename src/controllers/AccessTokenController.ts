@@ -86,6 +86,28 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       res.status(500).json(error);
     }
   }
+
+  async isValidAccessToken(req: Request, res: Response): Promise<void> {
+    try {
+      const { authorization: token } = req.headers;
+      if (!token) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      const decoded = jwt.verify(
+        token.split(" ")[1] as string,
+        process.env.JWT_SECRET as string,
+      );
+      if (!decoded) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+      res.status(200).json({ message: "Authorized" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
+    }
+  }
 }
 
 export { AccessTokenController };

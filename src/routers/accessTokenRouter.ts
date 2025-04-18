@@ -4,7 +4,11 @@ import { AccessTokenController } from "../controllers/AccessTokenController";
 const router = Router();
 
 const controller = new AccessTokenController();
-router.get("/access", controller.get.bind(controller));
+router.route("/access").get(controller.get.bind(controller));
+
+router
+  .route("/access/validate")
+  .get(controller.isValidAccessToken.bind(controller));
 router.get("/refresh", controller.getRefreshToken.bind(controller));
 
 export { router as accessTokenRouter };

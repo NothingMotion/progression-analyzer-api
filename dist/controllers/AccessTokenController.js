@@ -77,5 +77,26 @@ class AccessTokenController extends ControllerNoCrudDBBase_1.ControllerNoCrudDBB
             }
         });
     }
+    isValidAccessToken(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { authorization: token } = req.headers;
+                if (!token) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                const decoded = jsonwebtoken_1.default.verify(token.split(" ")[1], process.env.JWT_SECRET);
+                if (!decoded) {
+                    res.status(401).json({ message: "Unauthorized" });
+                    return;
+                }
+                res.status(200).json({ message: "Authorized" });
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).json(error);
+            }
+        });
+    }
 }
 exports.AccessTokenController = AccessTokenController;

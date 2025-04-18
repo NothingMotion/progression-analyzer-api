@@ -23,5 +23,8 @@ class BrawlerRarityUtils {
     static get(brawler) {
         return "Common";
     }
+    static is(brawler, target) {
+        return BrawlerRarityUtils.get(brawler) === target;
+    }
 }
 exports.BrawlerRarityUtils = BrawlerRarityUtils;

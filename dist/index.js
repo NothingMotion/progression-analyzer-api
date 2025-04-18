@@ -19,6 +19,7 @@ const passRouter_1 = require("./routers/passRouter");
 const trophyRoadRouter_1 = require("./routers/trophyRoadRouter");
 const brawlerRarityTableRouter_1 = require("./routers/brawlerRarityTableRouter");
 const upgradeTableRouter_1 = require("./routers/upgradeTableRouter");
+const notmotRouter_1 = require("./routers/notmotRouter");
 const constants_1 = require("./constants/constants");
 const app = (0, express_1.default)();
 (0, dbConnector_1.default)();
@@ -36,6 +37,7 @@ app.use("/api/v1/rewards/trophy-road", jwtAuthMiddleware_1.default, trophyRoadRo
 app.use("/api/v1/rewards/mastery", jwtAuthMiddleware_1.default, masteryRouter_1.masteryRouter);
 app.use("/api/v1/table/brawler/rarity", jwtAuthMiddleware_1.default, brawlerRarityTableRouter_1.rarityTableRouter);
 app.use("/api/v1/table/brawler/upgrade", jwtAuthMiddleware_1.default, upgradeTableRouter_1.upgradeTableRouter);
+app.use("/api/v1/notmot", jwtAuthMiddleware_1.default, notmotRouter_1.notmotRouter);
 app.use("*", (req, res) => {
     res.status(404).json({
         message: "Not Found",

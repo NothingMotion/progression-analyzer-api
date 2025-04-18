@@ -16,7 +16,7 @@ class AccountUtils {
   static convertTag(tag: string): string {
     return "#" + tag.toUpperCase();
   }
-  static async getAccount(tag: string): Promise<BrawlStarsAccount | Error> {
+  static async getAccount(tag: string): Promise<BrawlStarsAccount> {
     try {
       const account = await BrawlStarsAPI.get(tag);
       const extra = await BrawlStarsAPI.getExtra(tag);
@@ -63,7 +63,7 @@ class AccountUtils {
     }
   }
 
-  static async updateAccount(tag: string): Promise<BrawlStarsAccount | Error> {
+  static async updateAccount(tag: string): Promise<BrawlStarsAccount> {
     try {
       const savedAccount = await AccountModel.findOne({
         "account.tag": tag,
@@ -163,6 +163,7 @@ class AccountUtils {
 
   static parseExtraBrawlerName(name: string): string {
     return name
+      .replace("__", " ")
       .replace(" ", "")
       .replace("-", "")
       .replace("_", "")

@@ -13,8 +13,8 @@ import { starrDropRouter } from "./routers/starrDropRouter";
 import { passRouter } from "./routers/passRouter";
 import { trophyRoadRouter } from "./routers/trophyRoadRouter";
 import { rarityTableRouter } from "./routers/brawlerRarityTableRouter";
-
 import { upgradeTableRouter } from "./routers/upgradeTableRouter";
+import { notmotRouter } from "./routers/notmotRouter";
 import { PORT } from "./constants/constants";
 const app = express();
 
@@ -36,8 +36,8 @@ app.use("/api/v1/rewards/starrdrop", authMiddleware, starrDropRouter);
 app.use("/api/v1/rewards/trophy-road", authMiddleware, trophyRoadRouter);
 app.use("/api/v1/rewards/mastery", authMiddleware, masteryRouter);
 app.use("/api/v1/table/brawler/rarity", authMiddleware, rarityTableRouter);
-
 app.use("/api/v1/table/brawler/upgrade", authMiddleware, upgradeTableRouter);
+app.use("/api/v1/notmot", authMiddleware, notmotRouter);
 app.use("*", (req, res) => {
   res.status(404).json({
     message: "Not Found",
