@@ -67,7 +67,7 @@ class AccountController extends ControllerBase_1.ControllerBase {
                     this.sendSuccessResponse(res, account);
                 }
                 else {
-                    this.sendSuccessResponse(res, account, 200);
+                    this.sendSuccessResponse(res, account[0], 200);
                 }
             }
             catch (error) {

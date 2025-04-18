@@ -56,7 +56,7 @@ class AccountController extends ControllerBase<BrawlStarsAccount> {
         await this.crudDB.create(account);
         this.sendSuccessResponse(res, account);
       } else {
-        this.sendSuccessResponse(res, account, 200);
+        this.sendSuccessResponse(res, account[0], 200);
       }
     } catch (error) {
       if (error instanceof BrawlStarsAPIError) {
