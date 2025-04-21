@@ -39,20 +39,31 @@ class AccountCalculator {
     ).length;
 
     const gadgets = brawlers
-      .filter((brawler) => brawler.gadgets?.length)
-      .reduce((acc, brawler) => {
-        return acc + (brawler.gadgets?.length || 0);
-      }, 0);
+      .filter(
+        (brawler) =>
+          brawler.gadgets &&
+          Array.isArray(brawler.gadgets) &&
+          brawler.gadgets.length > 0,
+      )
+      .reduce((acc, brawler) => acc + brawler.gadgets!.length, 0);
+
     const starPowers = brawlers
-      .filter((brawler) => brawler.starPowers?.length)
-      .reduce((acc, brawler) => {
-        return acc + (brawler.starPowers?.length || 0);
-      }, 0);
+      .filter(
+        (brawler) =>
+          brawler.starPowers &&
+          Array.isArray(brawler.starPowers) &&
+          brawler.starPowers.length > 0,
+      )
+      .reduce((acc, brawler) => acc + brawler.starPowers!.length, 0);
+
     const gears = brawlers
-      .filter((brawler) => brawler.gears?.length)
-      .reduce((acc, brawler) => {
-        return acc + (brawler.gears?.length || 0);
-      }, 0);
+      .filter(
+        (brawler) =>
+          brawler.gears &&
+          Array.isArray(brawler.gears) &&
+          brawler.gears.length > 0,
+      )
+      .reduce((acc, brawler) => acc + brawler.gears!.length, 0);
 
     let coins: number = 0;
     let powerPoints: number = 0;
