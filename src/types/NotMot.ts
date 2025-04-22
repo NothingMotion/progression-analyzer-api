@@ -32,7 +32,7 @@ interface ICrashLytics {
   uuid: string;
   timestamp: Date;
   type: string;
-  throwable?: string;
+  throwable?: object;
   message: string;
   stackTrace: string;
   deviceInfo: IDeviceInfo;

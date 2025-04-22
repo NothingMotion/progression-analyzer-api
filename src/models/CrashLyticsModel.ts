@@ -26,7 +26,7 @@ const crashLyticsSchema = new Schema<ICrashLytics>(
     uuid: { type: String, required: true },
     timestamp: { type: Date, required: true, default: Date.now },
     type: { type: String, required: true },
-    throwable: { type: String, required: false },
+    throwable: { type: Object, required: false },
     message: { type: String, required: true },
     stackTrace: { type: String, required: true },
     deviceInfo: { type: deviceInfoSchema, required: true },
