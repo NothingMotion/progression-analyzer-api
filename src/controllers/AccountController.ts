@@ -18,7 +18,37 @@ class AccountController extends ControllerBase<BrawlStarsAccount> {
     this.historyCrudDB = historyCrudDB;
   }
   override isMatch(data: any): data is BrawlStarsAccount {
-    return data && typeof data === "object" && "account" in data;
+    return data && "account" in data;
+  }
+
+  override async getAll(req: Request, res: Response): Promise<void> {
+    try {
+      const { limit, offset } = req.query;
+      const accounts = await this.crudDB.getModel().find({}, null, {
+        limit: limit ? parseInt(limit as string) : 10,
+        skip: offset ? parseInt(offset as string) : 0,
+      });
+      if (!accounts || accounts.length === 0) {
+        this.sendErrorResponse(res, new Error("No accounts found"), 404);
+        return;
+      }
+      const paginatedAccounts = accounts.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime(),
+      );
+      const response = {
+        length: accounts.length,
+        accounts: paginatedAccounts,
+        offset: offset ? parseInt(offset as string) : 0,
+        limit: limit ? parseInt(limit as string) : 10,
+      };
+      res.status(200).json(response);
+    } catch (error) {
+      if (error instanceof BrawlStarsAPIError) {
+        this.sendErrorResponse(res, error as Error, error.statusCode);
+        return;
+      }
+      this.sendErrorResponse(res, error as Error, 500);
+    }
   }
 
   override async getById(req: Request, res: Response): Promise<void> {
