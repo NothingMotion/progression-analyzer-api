@@ -14,7 +14,7 @@ class AccountUtils {
   }
 
   static convertTag(tag: string): string {
-    return "#" + tag.toUpperCase();
+    return tag.includes("#") ? tag.toUpperCase() : "#" + tag.toUpperCase();
   }
   static async getAccount(tag: string): Promise<BrawlStarsAccount> {
     try {
