@@ -23,7 +23,7 @@ class AccountUtils {
         return tag.replace("#", "").trim().toUpperCase();
     }
     static convertTag(tag) {
-        return "#" + tag.toUpperCase();
+        return tag.includes("#") ? tag.toUpperCase() : "#" + tag.toUpperCase();
     }
     static getAccount(tag) {
         return __awaiter(this, void 0, void 0, function* () {

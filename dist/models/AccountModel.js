@@ -139,10 +139,12 @@ const accountSchema = new mongoose_1.Schema({
         tag: {
             type: String,
             required: false,
+            default: "",
         },
         name: {
             type: String,
             required: false,
+            default: "",
         },
     },
 }, { timestamps: true });

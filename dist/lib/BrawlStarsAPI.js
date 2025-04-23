@@ -52,22 +52,165 @@ const BrawlStarsAPIError_1 = require("../errors/BrawlStarsAPIError");
 Object.defineProperty(exports, "BrawlStarsAPIError", { enumerable: true, get: function () { return BrawlStarsAPIError_1.BrawlStarsAPIError; } });
 const Logger_1 = __importDefault(require("./Logger"));
 class BrawlStarsAPI {
-    constructor(baseUrl = "https://api.brawlstars.com/v1", baseUrlAlternative = "https://brawltime.ninja/api/player.byTag?", baseUrlExtra = "https://brawltime.ninja/api/player.byTagExtra?", apiKey = "") {
+    constructor(baseUrl = "https://api.brawlstars.com/v1", baseUrlAlternative = "https://brawltime.ninja/api/", apiKey = "") {
         this.baseUrl = baseUrl;
         this.baseUrlAlternative = baseUrlAlternative;
-        this.baseUrlExtra = baseUrlExtra;
         // Only validate API key if we're using the official API
         if (baseUrl.includes("api.brawlstars.com") && !apiKey) {
             Logger_1.default.log("Warning: No API key provided for official Brawl Stars API");
         }
         this.apiKey = apiKey;
     }
+    getBattleLog(tag) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            try {
+                // Use the exact same URL format as the working curl command
+                const url = `${this.baseUrlAlternative}player.byTag?input=%7B%22json%22%3A%22${tag}%22%7D`;
+                const response = yield axios_1.default.get(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "User-Agent": "PostmanRuntime/7.43.3",
+                        Accept: "*/*",
+                        Connection: "keep-alive",
+                    },
+                    timeout: 4000,
+                    proxy: this.shouldUseProxy() ? this.getProxyConfig() : false,
+                });
+                return response.data.result.data.json.battles;
+            }
+            catch (error) {
+                console.error(error);
+                if (error instanceof BrawlStarsAPIError_1.BrawlStarsAPIError) {
+                    throw error;
+                }
+                if (error instanceof axios_1.AxiosError) {
+                    switch ((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) {
+                        case 400:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InvalidTag(((_b = error.response) === null || _b === void 0 ? void 0 : _b.data.message) || "Invalid tag");
+                        case 401:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Unauthorized(((_c = error.response) === null || _c === void 0 ? void 0 : _c.data.message) || "Unauthorized");
+                        case 403:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Forbidden(((_d = error.response) === null || _d === void 0 ? void 0 : _d.data.message) || "Forbidden");
+                        case 404:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.AccountNotFound(((_e = error.response) === null || _e === void 0 ? void 0 : _e.data.message) || "Account not found");
+                        case 429:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.RateLimitExceeded(((_f = error.response) === null || _f === void 0 ? void 0 : _f.data.message) || "Rate limit exceeded");
+                        case 500:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError(((_g = error.response) === null || _g === void 0 ? void 0 : _g.data.message) || "Internal server error");
+                        case 503:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.ServiceUnavailable(((_h = error.response) === null || _h === void 0 ? void 0 : _h.data.message) || "Service unavailable");
+                        default:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Unknown error occurred");
+                    }
+                }
+                Logger_1.default.log(`Error fetching account: ${error}`);
+                throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Internal server error");
+            }
+        });
+    }
+    getClub(clubTag) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            try {
+                // Use the exact same URL format as the working curl command
+                const url = `${this.baseUrlAlternative}club.byTag?input=%7B%22json%22%3A%22${clubTag}%22%7D`;
+                const response = yield axios_1.default.get(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "User-Agent": "PostmanRuntime/7.43.3",
+                        Accept: "*/*",
+                        Connection: "keep-alive",
+                    },
+                    timeout: 4000,
+                    proxy: this.shouldUseProxy() ? this.getProxyConfig() : false,
+                });
+                return response.data.result.data.json;
+            }
+            catch (error) {
+                if (error instanceof BrawlStarsAPIError_1.BrawlStarsAPIError) {
+                    throw error;
+                }
+                if (error instanceof axios_1.AxiosError) {
+                    switch ((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) {
+                        case 400:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InvalidTag(((_b = error.response) === null || _b === void 0 ? void 0 : _b.data.message) || "Invalid tag");
+                        case 401:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Unauthorized(((_c = error.response) === null || _c === void 0 ? void 0 : _c.data.message) || "Unauthorized");
+                        case 403:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Forbidden(((_d = error.response) === null || _d === void 0 ? void 0 : _d.data.message) || "Forbidden");
+                        case 404:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.AccountNotFound(((_e = error.response) === null || _e === void 0 ? void 0 : _e.data.message) || "Account not found");
+                        case 429:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.RateLimitExceeded(((_f = error.response) === null || _f === void 0 ? void 0 : _f.data.message) || "Rate limit exceeded");
+                        case 500:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError(((_g = error.response) === null || _g === void 0 ? void 0 : _g.data.message) || "Internal server error");
+                        case 503:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.ServiceUnavailable(((_h = error.response) === null || _h === void 0 ? void 0 : _h.data.message) || "Service unavailable");
+                        default:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Unknown error occurred");
+                    }
+                }
+                Logger_1.default.log(`Error fetching account: ${error}`);
+                throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Internal server error");
+            }
+        });
+    }
+    getClubActivityStatistics(clubTag, membersTag) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            try {
+                // Use the exact same URL format as the working curl command
+                const url = `${this.baseUrlAlternative}club.activityStatisticsByTags?input={"json":[${membersTag
+                    .map((tag) => `"${tag}"`)
+                    .join(",")}]}`;
+                const response = yield axios_1.default.get(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "User-Agent": "PostmanRuntime/7.43.3",
+                        Accept: "*/*",
+                        Connection: "keep-alive",
+                    },
+                    timeout: 4000,
+                    proxy: this.shouldUseProxy() ? this.getProxyConfig() : false,
+                });
+                return response.data.result.data.json;
+            }
+            catch (error) {
+                if (error instanceof BrawlStarsAPIError_1.BrawlStarsAPIError) {
+                    throw error;
+                }
+                if (error instanceof axios_1.AxiosError) {
+                    switch ((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) {
+                        case 400:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InvalidTag(((_b = error.response) === null || _b === void 0 ? void 0 : _b.data.message) || "Invalid tag");
+                        case 401:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Unauthorized(((_c = error.response) === null || _c === void 0 ? void 0 : _c.data.message) || "Unauthorized");
+                        case 403:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.Forbidden(((_d = error.response) === null || _d === void 0 ? void 0 : _d.data.message) || "Forbidden");
+                        case 404:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.AccountNotFound(((_e = error.response) === null || _e === void 0 ? void 0 : _e.data.message) || "Account not found");
+                        case 429:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.RateLimitExceeded(((_f = error.response) === null || _f === void 0 ? void 0 : _f.data.message) || "Rate limit exceeded");
+                        case 500:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError(((_g = error.response) === null || _g === void 0 ? void 0 : _g.data.message) || "Internal server error");
+                        case 503:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.ServiceUnavailable(((_h = error.response) === null || _h === void 0 ? void 0 : _h.data.message) || "Service unavailable");
+                        default:
+                            throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Unknown error occurred");
+                    }
+                }
+                Logger_1.default.log(`Error fetching account: ${error}`);
+                throw BrawlStarsAPIError_1.BrawlStarsAPIError.InternalServerError("Internal server error");
+            }
+        });
+    }
     get(tag) {
         return __awaiter(this, void 0, void 0, function* () {
             var _a, _b, _c, _d, _e, _f, _g, _h;
             try {
                 // Use the exact same URL format as the working curl command
-                const url = `${this.baseUrlAlternative}input=%7B%22json%22%3A%22${tag}%22%7D`;
+                const url = `${this.baseUrlAlternative}player.byTag?input=%7B%22json%22%3A%22${tag}%22%7D`;
                 const response = yield axios_1.default.get(url, {
                     headers: {
                         "Content-Type": "application/json",
@@ -106,6 +249,7 @@ class BrawlStarsAPI {
                 return accountData;
             }
             catch (error) {
+                console.error(error);
                 if (error instanceof BrawlStarsAPIError_1.BrawlStarsAPIError) {
                     throw error;
                 }
@@ -139,7 +283,7 @@ class BrawlStarsAPI {
             var _a, _b;
             try {
                 // Use the exact same URL format as the working get method
-                const url = `${this.baseUrlExtra}input=%7B%22json%22%3A%22${tag}%22%7D`;
+                const url = `${this.baseUrlAlternative}player.byTagExtra?input=%7B%22json%22%3A%22${tag}%22%7D`;
                 const response = yield axios_1.default.get(url, {
                     headers: {
                         "Content-Type": "application/json",

@@ -127,5 +127,8 @@ class CrudDBBase {
             }
         });
     }
+    getModel() {
+        return this.model;
+    }
 }
 exports.default = CrudDBBase;
