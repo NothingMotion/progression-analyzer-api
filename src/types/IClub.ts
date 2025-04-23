@@ -25,3 +25,5 @@ interface ClubActivityStatistics {
   commonBattles: Battle[];
   battlesByMode: Record<string, number>;
 }
+
+export { IClub, ClubMember, ClubActivityStatistics };
