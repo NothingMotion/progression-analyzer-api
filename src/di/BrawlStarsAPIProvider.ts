@@ -31,10 +31,8 @@ class BrawlStarsAPIProvider {
       BrawlStarsAPIProvider.instance = new BrawlStarsAPI(
         process.env.BRAWLSTARS_API_URL || "https://api.brawlstars.com/v1",
         process.env.BRAWLSTARS_API_URL_ALTERNATIVE ||
-          "https://brawltime.ninja/api/player.byTag?",
-        process.env.BRAWLSTARS_API_URL_EXTRA ||
-          "https://brawltime.ninja/api/player.byTagExtra?",
-        apiKey,
+          "https://brawltime.ninja/api/",
+        "",
       );
     }
 
