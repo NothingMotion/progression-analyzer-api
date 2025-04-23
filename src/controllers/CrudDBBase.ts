@@ -91,6 +91,9 @@ class CrudDBBase<T> implements ICrudDB<T> {
       throw new Error(error as string);
     }
   }
+  getModel(): Model<T> {
+    return this.model;
+  }
 }
 
 export default CrudDBBase;
