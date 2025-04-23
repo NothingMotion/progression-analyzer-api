@@ -146,10 +146,12 @@ const accountSchema: Schema = new Schema<IAccount>(
       tag: {
         type: String,
         required: false,
+        default: "",
       },
       name: {
         type: String,
         required: false,
+        default: "",
       },
     },
   },
