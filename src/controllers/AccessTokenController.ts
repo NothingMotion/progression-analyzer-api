@@ -16,6 +16,7 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
         authorization,
         "application-request-sender": applicationRequestSender,
       } = req.headers;
+      console.log("application request sender is :", applicationRequestSender);
       if (!authorization) {
         res.status(401).json({ message: "Unauthorized" });
         return;
