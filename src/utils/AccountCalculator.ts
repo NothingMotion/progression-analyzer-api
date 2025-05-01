@@ -74,9 +74,9 @@ class AccountCalculator {
 
       let spentCoins = 0;
       let spentPowerPoints = 0;
-      Object.entries(BrawlerRarityTable).forEach(([rarity, value]) => {
-        if (rarity === BrawlerRarityUtils.get(brawler)) {
-          credits += value;
+      BrawlerRarityTable.forEach((rarity) => {
+        if (rarity.name === BrawlerRarityUtils.get(brawler)) {
+          credits += rarity.value;
           return;
         }
       });
