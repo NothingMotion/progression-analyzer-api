@@ -30,6 +30,11 @@ const jwtAuthMiddleware = async (
     }
   } catch (error) {
     console.error(error);
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      res.status(401).json({ message: "Unauthorized" });
+      return;
+    }
     res.status(500).json({
       message: "Failed to authenticate token",
       error: (error as Error).message,

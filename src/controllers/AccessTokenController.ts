@@ -51,6 +51,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       };
       res.status(200).json({ message: "Authorized", response });
     } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
       console.error(error);
       res.status(500).json(error);
     }
@@ -84,6 +88,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       res.status(200).json({ message: "Authorized", refreshToken });
     } catch (error) {
       console.error(error);
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
       res.status(500).json(error);
     }
   }
@@ -105,6 +113,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       }
       res.status(200).json({ message: "Authorized" });
     } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
       console.error(error);
       res.status(500).json(error);
     }
