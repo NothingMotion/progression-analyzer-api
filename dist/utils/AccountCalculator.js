@@ -16,23 +16,20 @@ class AccountCalculator {
         const superRare = brawlers.filter((brawler) => BrawlerRarityUtils_1.BrawlerRarityUtils.isSuperRare(brawler)).length;
         const mythic = brawlers.filter((brawler) => BrawlerRarityUtils_1.BrawlerRarityUtils.isMythic(brawler)).length;
         const gadgets = brawlers
-            .filter((brawler) => { var _a; return (_a = brawler.gadgets) === null || _a === void 0 ? void 0 : _a.length; })
-            .reduce((acc, brawler) => {
-            var _a;
-            return acc + (((_a = brawler.gadgets) === null || _a === void 0 ? void 0 : _a.length) || 0);
-        }, 0);
+            .filter((brawler) => brawler.gadgets &&
+            Array.isArray(brawler.gadgets) &&
+            brawler.gadgets.length > 0)
+            .reduce((acc, brawler) => acc + brawler.gadgets.length, 0);
         const starPowers = brawlers
-            .filter((brawler) => { var _a; return (_a = brawler.starPowers) === null || _a === void 0 ? void 0 : _a.length; })
-            .reduce((acc, brawler) => {
-            var _a;
-            return acc + (((_a = brawler.starPowers) === null || _a === void 0 ? void 0 : _a.length) || 0);
-        }, 0);
+            .filter((brawler) => brawler.starPowers &&
+            Array.isArray(brawler.starPowers) &&
+            brawler.starPowers.length > 0)
+            .reduce((acc, brawler) => acc + brawler.starPowers.length, 0);
         const gears = brawlers
-            .filter((brawler) => { var _a; return (_a = brawler.gears) === null || _a === void 0 ? void 0 : _a.length; })
-            .reduce((acc, brawler) => {
-            var _a;
-            return acc + (((_a = brawler.gears) === null || _a === void 0 ? void 0 : _a.length) || 0);
-        }, 0);
+            .filter((brawler) => brawler.gears &&
+            Array.isArray(brawler.gears) &&
+            brawler.gears.length > 0)
+            .reduce((acc, brawler) => acc + brawler.gears.length, 0);
         let coins = 0;
         let powerPoints = 0;
         let credits = 0;

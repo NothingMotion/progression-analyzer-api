@@ -39,5 +39,14 @@ class TrackController extends ControllerBase<ITrack> {
       res.status(500).json(error);
     }
   }
+  override async create(req: Request, res: Response): Promise<void> {
+    try {
+      const track = await this.crudDB.create(req.body);
+      res.status(201).json(track);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json(error);
+    }
+  }
 }
 export { NotMotController, TrackController };

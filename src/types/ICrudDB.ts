@@ -1,4 +1,4 @@
-import { FilterQuery, QueryOptions } from "mongoose";
+import { FilterQuery, Model, QueryOptions } from "mongoose";
 
 interface ICrudDB<T> {
   create(data: T): Promise<T>;
@@ -15,6 +15,7 @@ interface ICrudDB<T> {
   delete<ID = string | number>(id: ID): Promise<T>;
   deleteByQuery(query: FilterQuery<T>): Promise<T>;
   deleteByOne(query: FilterQuery<T>): Promise<T>;
+  getModel(): Model<T>;
 }
 
 export { ICrudDB };

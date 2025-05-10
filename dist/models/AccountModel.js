@@ -3,24 +3,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HistoryModel = exports.AccountModel = void 0;
 const mongoose_1 = require("mongoose");
 const currentProgressSchema = new mongoose_1.Schema({
-    coins: { type: Number, required: true },
-    powerPoints: { type: Number, required: true },
-    credits: { type: Number, required: true },
-    gears: { type: Number, required: true },
-    starPowers: { type: Number, required: true },
-    brawlers: { type: Number, required: true },
-    averageBrawlerPower: { type: Number, required: true },
-    averageBrawlerTrophies: { type: Number, required: true },
-    isBoughtPass: { type: Boolean, required: true },
-    isBoughtPassPlus: { type: Boolean, required: true },
-    isBoughtRankedPass: { type: Boolean, required: true },
-    duration: { type: Date, required: true },
+    coins: { type: Number, required: true, default: 0 },
+    powerPoints: { type: Number, required: true, default: 0 },
+    credits: { type: Number, required: true, default: 0 },
+    gears: { type: Number, required: true, default: 0 },
+    gadgets: { type: Number, required: true, default: 0 },
+    starPowers: { type: Number, required: true, default: 0 },
+    brawlers: { type: Number, required: true, default: 0 },
+    averageBrawlerPower: { type: Number, required: true, default: 0 },
+    averageBrawlerTrophies: { type: Number, required: true, default: 0 },
+    isBoughtPass: { type: Boolean, required: true, default: false },
+    isBoughtPassPlus: { type: Boolean, required: true, default: false },
+    isBoughtRankedPass: { type: Boolean, required: true, default: false },
+    duration: { type: Date, required: true, default: Date.now },
 });
 const futureProgressSchema = new mongoose_1.Schema({
     coins: { type: Number, required: true },
     powerPoints: { type: Number, required: true },
     credits: { type: Number, required: true },
     gears: { type: Number, required: true },
+    gadgets: { type: Number, required: true },
     starPowers: { type: Number, required: true },
     brawlers: { type: Number, required: true },
     isBoughtPass: { type: Boolean, required: true },
@@ -137,10 +139,12 @@ const accountSchema = new mongoose_1.Schema({
         tag: {
             type: String,
             required: false,
+            default: "",
         },
         name: {
             type: String,
             required: false,
+            default: "",
         },
     },
 }, { timestamps: true });
@@ -271,16 +275,33 @@ const brawlStarsAccountSchema = new mongoose_1.Schema({
         {
             type: currentProgressSchema,
             required: true,
+            default: [],
         },
     ],
     currentProgress: {
         type: currentProgressSchema,
         required: false,
+        default: {
+            coins: 0,
+            powerPoints: 0,
+            credits: 0,
+            gears: 0,
+            gadgets: 0,
+            starPowers: 0,
+            brawlers: 0,
+            averageBrawlerPower: 0,
+            averageBrawlerTrophies: 0,
+            isBoughtPass: false,
+            isBoughtPassPlus: false,
+            isBoughtRankedPass: false,
+            duration: new Date(),
+        },
     },
     futureProgresses: [
         {
             type: futureProgressSchema,
             required: true,
+            default: [],
         },
     ],
 }, { timestamps: true });

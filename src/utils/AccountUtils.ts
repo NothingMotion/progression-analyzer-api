@@ -10,11 +10,18 @@ class AccountUtils {
     return ACCOUNT_TAG_REGEX.test(tag);
   }
   static parseTag(tag: string): string {
-    return tag.replace("#", "").trim().toUpperCase();
+    return tag
+      .replace("#", "")
+      .trim()
+      .replace(" ", "")
+      .replace(/O/gi, "0")
+      .toUpperCase();
   }
 
   static convertTag(tag: string): string {
-    return "#" + tag.toUpperCase();
+    return tag.includes("#")
+      ? tag.toUpperCase().replace(" ", "").replace(/O/gi, "0")
+      : "#" + tag.toUpperCase().replace(" ", "").replace(/O/gi, "0");
   }
   static async getAccount(tag: string): Promise<BrawlStarsAccount> {
     try {

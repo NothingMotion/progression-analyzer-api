@@ -32,7 +32,37 @@ class AccountController extends ControllerBase_1.ControllerBase {
         this.historyCrudDB = historyCrudDB;
     }
     isMatch(data) {
-        return data && typeof data === "object" && "account" in data;
+        return data && "account" in data;
+    }
+    getAll(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { limit, offset } = req.query;
+                const accounts = yield this.crudDB.getModel().find({}, null, {
+                    limit: limit ? parseInt(limit) : 10,
+                    skip: offset ? parseInt(offset) : 0,
+                });
+                if (!accounts || accounts.length === 0) {
+                    this.sendErrorResponse(res, new Error("No accounts found"), 404);
+                    return;
+                }
+                const paginatedAccounts = accounts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+                const response = {
+                    length: accounts.length,
+                    accounts: paginatedAccounts,
+                    offset: offset ? parseInt(offset) : 0,
+                    limit: limit ? parseInt(limit) : 10,
+                };
+                res.status(200).json(response);
+            }
+            catch (error) {
+                if (error instanceof BrawlStarsAPI_1.BrawlStarsAPIError) {
+                    this.sendErrorResponse(res, error, error.statusCode);
+                    return;
+                }
+                this.sendErrorResponse(res, error, 500);
+            }
+        });
     }
     getById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -67,7 +97,7 @@ class AccountController extends ControllerBase_1.ControllerBase {
                     this.sendSuccessResponse(res, account);
                 }
                 else {
-                    this.sendSuccessResponse(res, account, 200);
+                    this.sendSuccessResponse(res, account[0], 200);
                 }
             }
             catch (error) {

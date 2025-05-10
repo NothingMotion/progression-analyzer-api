@@ -12,11 +12,12 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
 
   override async get(req: Request, res: Response): Promise<void> {
     try {
-      const {
-        authorization,
-        "application-request-sender": applicationRequestSender,
-      } = req.headers;
+      const { "application-request-sender": applicationRequestSender } =
+        req.headers;
+      console.log("application request sender is :", applicationRequestSender);
+      const authorization = req.headers.authorization;
       if (!authorization) {
+        console.log("didn't specifed authorization");
         res.status(401).json({ message: "Unauthorized" });
         return;
       }
@@ -50,6 +51,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       };
       res.status(200).json({ message: "Authorized", response });
     } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized", error: error.message });
+        return;
+      }
       console.error(error);
       res.status(500).json(error);
     }
@@ -83,6 +88,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       res.status(200).json({ message: "Authorized", refreshToken });
     } catch (error) {
       console.error(error);
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
       res.status(500).json(error);
     }
   }
@@ -104,6 +113,10 @@ class AccessTokenController extends ControllerNoCrudDBBase<IToken> {
       }
       res.status(200).json({ message: "Authorized" });
     } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError) {
+        res.status(401).json({ message: "Unauthorized", error: error.message });
+        return;
+      }
       console.error(error);
       res.status(500).json(error);
     }

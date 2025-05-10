@@ -9,4 +9,32 @@ interface INotMot {
   url: string;
 }
 
-export { INotMot };
+interface IDeviceInfo {
+  appVersion: string;
+  deviceModel: string;
+  deviceManufacturer: string;
+  osVersion: string;
+  batteryStatus: string;
+  batteryPercentage: string;
+  totalStorage: string;
+  freeStorage: string;
+  storagePercentage: string;
+  totalMemoryUsage: string;
+  freeMemoryUsage: string;
+  memoryPercentage: string;
+  networkInfo: string;
+  dataSyncStatus: string;
+  healthStatus: string;
+  userActivity: string;
+  deviceIdentity: string;
+}
+interface ICrashLytics {
+  uuid: string;
+  timestamp: Date;
+  type: string;
+  throwable?: object;
+  message: string;
+  stackTrace: string;
+  deviceInfo: IDeviceInfo;
+}
+export { INotMot, ICrashLytics };

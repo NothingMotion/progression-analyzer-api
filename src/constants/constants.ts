@@ -89,10 +89,32 @@ const UpgradeTable = {
     },
   ],
 };
-const BrawlerRarityTable = {
-  Common: 0,
-  SuperRare: 400,
-};
+const BrawlerRarityTable = [
+  {
+    name: "Common",
+    value: 0,
+  },
+  {
+    name: "Rare",
+    value: 100,
+  },
+  {
+    name: "SuperRare",
+    value: 400,
+  },
+  {
+    name: "Epic",
+    value: 1000,
+  },
+  {
+    name: "Mythic",
+    value: 2000,
+  },
+  {
+    name: "Legendary",
+    value: 3000,
+  },
+];
 const StarrDropChancesTable: IStarrDropRewards[] = [
   {
     id: 1,

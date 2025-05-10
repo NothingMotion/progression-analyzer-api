@@ -3,8 +3,11 @@ import Logger from "./lib/Logger";
 import path from "path";
 configDotenv({ path: path.join(__dirname, "../.env.local") });
 import express from "express";
+import cors from "cors";
 import { router as accountRouter } from "./routers/accountRouter";
 import { accessTokenRouter } from "./routers/accessTokenRouter";
+import { battleRouter } from "./routers/battleRouter";
+import { clubRouter } from "./routers/clubRouter";
 import dbConnector from "./utils/dbConnector";
 import authMiddleware from "./middlewares/jwtAuthMiddleware";
 import rateLimit from "express-rate-limit";
@@ -16,9 +19,25 @@ import { rarityTableRouter } from "./routers/brawlerRarityTableRouter";
 import { upgradeTableRouter } from "./routers/upgradeTableRouter";
 import { notmotRouter } from "./routers/notmotRouter";
 import { PORT } from "./constants/constants";
+import { AccountModel } from "./models/AccountModel";
+import { BrawlStarsAccount } from "./types/IAccount";
 const app = express();
 
 dbConnector();
+
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: "*", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "application-request-sender",
+    ],
+    credentials: true,
+  }),
+);
 
 //rate limit
 app.use(
@@ -31,6 +50,8 @@ app.use(
 app.use(express.json());
 app.use("/api/v1/token", accessTokenRouter);
 app.use("/api/v1/accounts", authMiddleware, accountRouter);
+app.use("/api/v1/battles", authMiddleware, battleRouter);
+app.use("/api/v1/clubs", authMiddleware, clubRouter);
 app.use("/api/v1/rewards/pass", authMiddleware, passRouter);
 app.use("/api/v1/rewards/starrdrop", authMiddleware, starrDropRouter);
 app.use("/api/v1/rewards/trophy-road", authMiddleware, trophyRoadRouter);
